@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(grep -i -E \"\\\\.md$|skill|claude\")",
-      "Bash(npx ng build)"
-    ]
-  }
-}
