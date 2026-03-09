@@ -17,7 +17,7 @@ import { RouterLink } from '@angular/router';
         <div class="home-header">
           <div class="home-symbol">◆</div>
           <h1 class="home-title">
-            Bonjour, <span class="home-username">{{ username() }}</span>
+            Bonjour, <span class="home-username">{{ username()?.username ?? 'Opérateur' }}</span>
           </h1>
           <p class="home-subtitle">
             Initiez une discussion de groupe avec vos agents IA.
