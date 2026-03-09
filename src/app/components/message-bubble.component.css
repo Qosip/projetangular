@@ -1,0 +1,4 @@
+    .thinking-dots span {
+        animation-duration: 0.8s;
+        animation-iteration-count: infinite;
+    }

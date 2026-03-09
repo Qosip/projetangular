@@ -1,0 +1,76 @@
+<div class="login-root">
+
+    <!-- Ambient grid -->
+    <div class="ambient-grid"></div>
+
+    <!-- Scanlines overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Corner decorations -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <!-- Main panel -->
+    <div class="login-panel" [class.shake]="shake()">
+
+        <!-- Header -->
+        <div class="panel-header">
+            <div class="logo-mark">◆</div>
+            <h1 class="logo-text">NEUROTERMINAL</h1>
+            <div class="logo-line"></div>
+        </div>
+
+        <!-- Terminal prompt -->
+        <p class="terminal-prompt">
+            <span class="prompt-char">&gt;</span>
+            <span class="prompt-text" #promptText></span><span class="cursor-blink">_</span>
+        </p>
+
+        <!-- Form -->
+        <form class="login-form" (ngSubmit)="connect()" autocomplete="off">
+
+            <div class="field-group">
+                <label class="field-label">EMAIL</label>
+                <input type="email" class="field-input" placeholder="operator@neuro.dev" [(ngModel)]="email"
+                    name="email" spellcheck="false" autocomplete="off" (keydown.enter)="connect()" />
+            </div>
+
+            <div class="field-group">
+                <label class="field-label">PASSWORD</label>
+                <input type="password" class="field-input" placeholder="••••••••••••" [(ngModel)]="password"
+                    name="password" autocomplete="current-password" (keydown.enter)="connect()" />
+            </div>
+
+            <button type="submit" class="connect-btn" [disabled]="isConnecting()">
+                @if (isConnecting()) {
+                <span class="loading-dots">
+                    <span></span><span></span><span></span>
+                </span>
+                } @else {
+                <span class="btn-text">CONNECT</span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+                }
+            </button>
+
+        </form>
+
+        @if (error()) {
+        <div class="error-msg">
+            <span class="error-icon">!</span>
+            <span>{{ error() }}</span>
+        </div>
+        }
+
+        <!-- Version hint -->
+        <p class="panel-footer">sys v1.0 · neural interface</p>
+
+    </div>
+
+    <!-- Bottom ambient -->
+    <p class="ambient-bottom">&gt; ready<span class="cursor-blink text-primary">_</span></p>
+
+</div>

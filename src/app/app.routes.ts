@@ -1,19 +1,19 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layout/main-layout';
-import { Home } from './pages/home';
-import { Chat } from './pages/chat';
-import { Login } from './pages/login';
+import { HomeComponent } from './pages/home.component';
+import { ChatComponent } from './pages/chat.component';
+import { LoginComponent } from './pages/login.component';
 import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
-  { path: 'login', component: Login },
+  { path: 'login', component: LoginComponent },
   {
     path: '',
     component: MainLayout,
     canActivate: [authGuard],
     children: [
-      { path: '', component: Home },
-      { path: 'chat/:id', component: Chat },
+      { path: '', component: HomeComponent },
+      { path: 'chat/:id', component: ChatComponent },
     ]
   },
   { path: '**', redirectTo: '' },

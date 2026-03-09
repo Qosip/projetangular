@@ -2,13 +2,13 @@ import { Component, inject, computed } from '@angular/core';
 import { RouterOutlet, ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
-import { Sidebar } from './sidebar';
-import { Topbar } from './topbar';
+import { SidebarComponent } from './sidebar.component';
+import { TopbarComponent } from './topbar.component';
 import { ConversationService } from '../services/conversation.service';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, Sidebar, Topbar],
+  imports: [RouterOutlet, SidebarComponent, TopbarComponent],
   template: `
     <div class="drawer lg:drawer-open">
       <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />

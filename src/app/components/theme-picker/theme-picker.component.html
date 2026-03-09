@@ -1,0 +1,10 @@
+<div class="theme-section px-4 py-2.5 shrink-0">
+    <p class="theme-label">&gt; thème</p>
+    <div class="theme-dots">
+        @for (theme of themes; track theme.id) {
+        <button class="theme-dot" [class.theme-dot--active]="themeService.currentTheme() === theme.id"
+            [style.background]="theme.accent" [title]="theme.label" (click)="themeService.setTheme(theme.id)">
+        </button>
+        }
+    </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="home-root">
+
+    <!-- Central content -->
+    <div class="home-center">
+
+        <!-- Greeting -->
+        <div class="home-header">
+            <div class="home-symbol">◆</div>
+            <h1 class="home-title">
+                Bonjour, <span class="home-username">{{ username()?.username ?? 'Opérateur' }}</span>
+            </h1>
+            <p class="home-subtitle">
+                Initiez une discussion de groupe avec vos agents IA.
+            </p>
+        </div>
+
+        <!-- New chat CTA -->
+        <button class="new-chat-cta" (click)="createChat()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Nouveau Chat</span>
+        </button>
+
+        <!-- Quick prompts -->
+        <div class="quick-prompts">
+            <button class="prompt-chip" (click)="createChatWithPrompt()">
+                Comparez vos réponses sur un sujet
+            </button>
+            <button class="prompt-chip" (click)="createChatWithPrompt()">
+                Débattez de l'IA générative
+            </button>
+            <button class="prompt-chip" (click)="createChatWithPrompt()">
+                Expliquez le machine learning
+            </button>
+        </div>
+
+        <!-- Recent conversations -->
+        @if (conversations().length > 0) {
+        <app-recent-conversations [conversations]="conversations().slice(0, 4)" />
+        }
+
+    </div>
+
+    <!-- Bottom hint -->
+    <p class="home-hint">&gt; neural gateway v1.0<span class="cursor-blink">_</span></p>
+
+</div>

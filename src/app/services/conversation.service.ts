@@ -1,33 +1,19 @@
-import { Injectable, signal, computed, effect } from '@angular/core';
+import { Injectable, signal, computed, effect, inject } from '@angular/core';
 import { Message, Conversation, AI_MODELS } from '../models/chat.models';
+import { ConversationRepository } from '../repositories/conversation.repository';
 
 @Injectable({ providedIn: 'root' })
 export class ConversationService {
-  private readonly STORAGE_KEY = 'neuro_conversations';
-  private conversationsMap = signal<Record<string, Conversation>>(this.loadInitial());
+  private repo = inject(ConversationRepository);
+  private conversationsMap = signal<Record<string, Conversation>>(this.repo.loadConversations());
 
   constructor() {
     effect(() => {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.conversationsMap()));
+      this.repo.saveConversations(this.conversationsMap());
     });
   }
 
-  private loadInitial(): Record<string, Conversation> {
-    const saved = localStorage.getItem(this.STORAGE_KEY);
-    if (!saved) return {};
-    try {
-      const parsed = JSON.parse(saved);
-      // Revive date strings
-      for (const id in parsed) {
-        parsed[id].createdAt = new Date(parsed[id].createdAt);
-        parsed[id].updatedAt = new Date(parsed[id].updatedAt);
-        parsed[id].messages.forEach((m: any) => m.timestamp = new Date(m.timestamp));
-      }
-      return parsed;
-    } catch {
-      return {};
-    }
-  }
+
 
   conversations = computed(() =>
     Object.values(this.conversationsMap()).sort(
