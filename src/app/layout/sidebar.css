@@ -41,3 +41,103 @@
 .logout-btn:hover {
     color: var(--color-error) !important;
 }
+
+/* ---- Actions (crayon / poubelle) ---- */
+.conv-actions {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.conv-li:hover .conv-actions {
+    opacity: 1;
+}
+
+.conv-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.12s, color 0.12s;
+    flex-shrink: 0;
+}
+
+.conv-action-btn svg {
+    width: 11px;
+    height: 11px;
+}
+
+.conv-btn-edit {
+    color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
+}
+
+.conv-btn-edit:hover {
+    background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+    color: var(--color-primary);
+}
+
+.conv-btn-delete {
+    color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
+}
+
+.conv-btn-delete:hover {
+    background: color-mix(in srgb, var(--color-error) 12%, transparent);
+    color: var(--color-error);
+}
+
+/* ---- Confirmation suppression ---- */
+.conv-delete-confirm {
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--color-error) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-error) 20%, transparent);
+}
+
+.conv-delete-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+    color: color-mix(in srgb, var(--color-error) 80%, transparent);
+    flex: 1;
+    text-transform: uppercase;
+}
+
+.conv-btn-confirm {
+    color: color-mix(in srgb, var(--color-success, #22c55e) 70%, transparent);
+}
+
+.conv-btn-confirm:hover {
+    background: color-mix(in srgb, var(--color-success, #22c55e) 12%, transparent);
+    color: var(--color-success, #22c55e);
+}
+
+.conv-btn-cancel {
+    color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
+}
+
+.conv-btn-cancel:hover {
+    background: color-mix(in srgb, var(--color-base-content) 8%, transparent);
+    color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
+}
+
+/* ---- Édition inline ---- */
+.conv-edit-row {
+    background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
+    border-radius: 4px;
+}
+
+.conv-edit-input {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: color-mix(in srgb, var(--color-base-content) 85%, transparent);
+    min-width: 0;
+    padding: 0;
+}

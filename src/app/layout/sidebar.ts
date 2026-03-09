@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, effect, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ChatService } from '../services/chat.service';
 import { AuthService } from '../services/auth.service';
 import { ModelService } from '../services/model.service';
@@ -8,7 +9,7 @@ import { ThemePickerComponent } from '../components/theme-picker/theme-picker';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive, ThemePickerComponent],
+  imports: [RouterLink, RouterLinkActive, ThemePickerComponent, FormsModule],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
@@ -21,6 +22,13 @@ export class SidebarComponent implements OnInit {
   getColor = getModelColor;
   showModelPicker = signal(false);
   selectedModels = signal<string[]>([]);
+
+  // Rename state
+  editingId = signal<number | null>(null);
+  editTitle = '';
+
+  // Delete confirmation state
+  confirmingDeleteId = signal<number | null>(null);
 
   constructor() {
     effect(() => {
@@ -66,5 +74,58 @@ export class SidebarComponent implements OnInit {
 
   cancelNewChat() {
     this.showModelPicker.set(false);
+  }
+
+  // --- Rename ---
+  startEdit(chatId: number, currentTitle: string | undefined, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.confirmingDeleteId.set(null);
+    this.editingId.set(chatId);
+    this.editTitle = currentTitle?.trim() || `Chat #${chatId}`;
+  }
+
+  confirmEdit(chatId: number, event?: Event) {
+    event?.preventDefault();
+    const title = this.editTitle.trim();
+    if (title) {
+      this.chatService.renameChat(chatId, title);
+    }
+    this.editingId.set(null);
+  }
+
+  cancelEdit(event?: Event) {
+    event?.preventDefault();
+    this.editingId.set(null);
+  }
+
+  onEditKeydown(chatId: number, event: KeyboardEvent) {
+    if (event.key === 'Enter') this.confirmEdit(chatId);
+    if (event.key === 'Escape') this.cancelEdit();
+  }
+
+  // --- Delete ---
+  askDelete(chatId: number, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.editingId.set(null);
+    this.confirmingDeleteId.set(chatId);
+  }
+
+  confirmDelete(chatId: number, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.chatService.deleteChat(chatId);
+    this.confirmingDeleteId.set(null);
+  }
+
+  cancelDelete(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.confirmingDeleteId.set(null);
+  }
+
+  getChatLabel(chatId: number, title?: string): string {
+    return title?.trim() ? title : `Chat #${chatId}`;
   }
 }

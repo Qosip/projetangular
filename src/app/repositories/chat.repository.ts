@@ -28,4 +28,12 @@ export class ChatRepository {
   sendMessage(chatId: number, content: string): Observable<Message> {
     return this.http.post<Message>(`${API}/chats/${chatId}/messages`, { content });
   }
+
+  deleteChat(id: number): Observable<void> {
+    return this.http.delete<void>(`${API}/chats/${id}`);
+  }
+
+  renameChat(id: number, title: string): Observable<Chat> {
+    return this.http.patch<Chat>(`${API}/chats/${id}`, { title });
+  }
 }

@@ -1,5 +1,6 @@
 export interface Chat {
   id: number;
+  title?: string;
   models: string[];
   rounds: number;
   processing: boolean;

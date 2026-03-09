@@ -32,8 +32,7 @@
                 @for (model of modelService.models(); track model.id) {
                 <button (click)="toggleModel(model.id)"
                     class="flex items-center gap-2 w-full px-2 py-1.5 rounded-md text-xs font-mono transition-all duration-150"
-                    [class.opacity-35]="!isSelected(model.id)"
-                    style="background: transparent;"
+                    [class.opacity-35]="!isSelected(model.id)" style="background: transparent;"
                     [style.background]="isSelected(model.id) ? 'color-mix(in srgb, ' + getColor(model.id) + ' 8%, transparent)' : ''">
                     <span class="w-2 h-2 rounded-full shrink-0" [style.background]="getColor(model.id)"></span>
                     <span class="flex-1 text-left" [style.color]="isSelected(model.id) ? getColor(model.id) : ''">
@@ -74,9 +73,54 @@
     <div class="flex-1 overflow-y-auto px-2 pb-2">
         <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px;">
             @for (chat of chatService.chats(); track chat.id) {
-            <li class="group relative">
+            <li class="conv-li group relative">
+
+                <!-- Mode suppression : confirmation -->
+                @if (confirmingDeleteId() === chat.id) {
+                <div class="conv-delete-confirm flex items-center gap-1 px-2 py-2 rounded">
+                    <span class="conv-delete-label">Supprimer ?</span>
+                    <button class="conv-action-btn conv-btn-confirm" title="Confirmer"
+                        (click)="confirmDelete(chat.id, $event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                    <button class="conv-action-btn conv-btn-cancel" title="Annuler" (click)="cancelDelete($event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Mode édition : input inline -->
+                } @else if (editingId() === chat.id) {
+                <div class="conv-edit-row flex items-center gap-1 px-2 py-1.5 rounded">
+                    <span class="flex gap-0.5 shrink-0">
+                        @for (model of chat.models.slice(0, 3); track model) {
+                        <span class="w-1 h-1 rounded-full" [style.background]="getColor(model)"></span>
+                        }
+                    </span>
+                    <input class="conv-edit-input flex-1" [(ngModel)]="editTitle"
+                        (keydown)="onEditKeydown(chat.id, $event)" autofocus />
+                    <button class="conv-action-btn conv-btn-confirm" title="Valider"
+                        (click)="confirmEdit(chat.id, $event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                    <button class="conv-action-btn conv-btn-cancel" title="Annuler" (click)="cancelEdit($event)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Mode normal -->
+                } @else {
                 <a [routerLink]="['/chat', chat.id]" routerLinkActive="active-conv"
-                    class="conv-item flex items-center gap-2 px-3 py-2 rounded truncate">
+                    class="conv-item flex items-center gap-2 px-3 py-2 rounded">
                     <span class="flex gap-0.5 shrink-0">
                         @for (model of chat.models.slice(0, 3); track model) {
                         <span class="w-1 h-1 rounded-full" [style.background]="getColor(model)"></span>
@@ -84,19 +128,39 @@
                     </span>
                     <span class="truncate flex-1"
                         style="font-family: var(--font-mono); font-size: 0.6875rem; color: color-mix(in srgb, var(--color-base-content) 55%, transparent);">
-                        Chat #{{ chat.id }}
+                        {{ getChatLabel(chat.id, chat.title) }}
                     </span>
                     @if (chat.processing) {
                     <span class="w-1.5 h-1.5 rounded-full bg-warning animate-pulse shrink-0"></span>
                     }
+                    <!-- Actions (visibles au hover) -->
+                    <span class="conv-actions flex items-center gap-0.5 shrink-0">
+                        <button class="conv-action-btn conv-btn-edit" title="Renommer"
+                            (click)="startEdit(chat.id, chat.title, $event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </button>
+                        <button class="conv-action-btn conv-btn-delete" title="Supprimer"
+                            (click)="askDelete(chat.id, $event)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </span>
                 </a>
+                }
+
             </li>
             } @empty {
             <li class="py-8 text-center">
                 <span
                     style="font-family: var(--font-mono); font-size: 0.5625rem; color: color-mix(in srgb, var(--color-base-content) 12%, transparent); display: block; line-height: 1.8;">
                     Aucune conversation<br>
-                    <span style="color: color-mix(in srgb, var(--color-primary) 25%, transparent);">&#8593; Commencer</span>
+                    <span style="color: color-mix(in srgb, var(--color-primary) 25%, transparent);">&#8593;
+                        Commencer</span>
                 </span>
             </li>
             }
