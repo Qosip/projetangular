@@ -59,7 +59,7 @@ import { ConversationService } from '../services/conversation.service';
       padding: 0 1rem;
       gap: 0.75rem;
       border-bottom: 1px solid var(--border-subtle);
-      background: rgba(19, 19, 27, 0.85);
+      background: color-mix(in srgb, var(--color-base-200) 85%, transparent);
       backdrop-filter: blur(12px);
     }
 
@@ -70,14 +70,14 @@ import { ConversationService } from '../services/conversation.service';
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      color: rgba(232, 232, 237, 0.3);
+      color: color-mix(in srgb, var(--color-base-content) 40%, transparent);
       border-radius: 4px;
       transition: color 0.15s, background 0.15s;
       flex-shrink: 0;
     }
     .hamburger:hover {
-      color: rgba(232, 232, 237, 0.6);
-      background: rgba(255, 255, 255, 0.03);
+      color: color-mix(in srgb, var(--color-base-content) 75%, transparent);
+      background: color-mix(in srgb, var(--color-base-content) 5%, transparent);
     }
     .hamburger svg { width: 18px; height: 18px; }
     @media (max-width: 1023px) { .hamburger { display: flex; } }
@@ -105,25 +105,25 @@ import { ConversationService } from '../services/conversation.service';
       transition: background 0.15s;
       min-width: 0;
     }
-    .title-btn:hover { background: rgba(255, 255, 255, 0.04); }
+    .title-btn:hover { background: color-mix(in srgb, var(--color-base-content) 4%, transparent); }
     .title-btn:hover .edit-icon { opacity: 1; }
 
     .title-text {
       font-family: var(--font-mono);
       font-size: 0.6875rem;
       letter-spacing: 0.05em;
-      color: rgba(232, 232, 237, 0.5);
+      color: color-mix(in srgb, var(--color-base-content) 65%, transparent);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       transition: color 0.15s;
     }
-    .title-btn:hover .title-text { color: rgba(232, 232, 237, 0.75); }
+    .title-btn:hover .title-text { color: color-mix(in srgb, var(--color-base-content) 90%, transparent); }
 
     .edit-icon {
       width: 11px;
       height: 11px;
-      color: rgba(0, 255, 136, 0.35);
+      color: color-mix(in srgb, var(--color-primary) 50%, transparent);
       flex-shrink: 0;
       opacity: 0;
       transition: opacity 0.15s;
@@ -131,28 +131,28 @@ import { ConversationService } from '../services/conversation.service';
 
     .title-input {
       flex: 1;
-      background: rgba(0, 255, 136, 0.04);
-      border: 1px solid rgba(0, 255, 136, 0.2);
+      background: color-mix(in srgb, var(--color-primary) 4%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-primary) 20%, transparent);
       border-radius: 3px;
       padding: 0.2rem 0.5rem;
       font-family: var(--font-mono);
       font-size: 0.6875rem;
       letter-spacing: 0.04em;
-      color: rgba(232, 232, 237, 0.75);
+      color: color-mix(in srgb, var(--color-base-content) 90%, transparent);
       outline: none;
       width: 100%;
       min-width: 0;
     }
     .title-input:focus {
-      border-color: rgba(0, 255, 136, 0.35);
-      box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.04);
+      border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 8%, transparent);
     }
 
     .title-placeholder {
       font-family: var(--font-mono);
       font-size: 0.6875rem;
       letter-spacing: 0.08em;
-      color: rgba(232, 232, 237, 0.2);
+      color: color-mix(in srgb, var(--color-base-content) 25%, transparent);
     }
 
     /* ── Model chips ── */

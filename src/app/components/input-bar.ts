@@ -122,21 +122,21 @@ export interface SendMessageEvent {
       align-items: center;
       gap: 0.5rem;
       padding: 0.4rem 0.6rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: color-mix(in srgb, var(--color-base-content) 3%, transparent);
       border: 1px solid var(--border-subtle);
       border-radius: 4px;
       font-family: var(--font-mono);
       font-size: 0.6875rem;
-      color: rgba(232, 232, 237, 0.4);
+      color: color-mix(in srgb, var(--color-base-content) 40%, transparent);
     }
-    .attachment-preview svg { width: 14px; height: 14px; color: rgba(0, 255, 136, 0.4); }
+    .attachment-preview svg { width: 14px; height: 14px; color: color-mix(in srgb, var(--color-primary) 40%, transparent); }
     .attachment-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .attachment-remove {
       background: none; border: none; cursor: pointer;
-      color: rgba(232, 232, 237, 0.2); font-size: 0.625rem;
+      color: color-mix(in srgb, var(--color-base-content) 20%, transparent); font-size: 0.625rem;
       transition: color 0.15s;
     }
-    .attachment-remove:hover { color: rgba(255, 59, 92, 0.6); }
+    .attachment-remove:hover { color: color-mix(in srgb, var(--color-error) 60%, transparent); }
 
     .input-container--locked {
       opacity: 0.45;
@@ -161,39 +161,39 @@ export interface SendMessageEvent {
       border-radius: 99px;
       border: 1px solid;
     }
-    .mode-badge--search   { color: #5B8DEF; border-color: rgba(91,141,239,0.25); background: rgba(91,141,239,0.06); }
-    .mode-badge--deep-thinking { color: #FFB800; border-color: rgba(255,184,0,0.25); background: rgba(255,184,0,0.06); }
-    .mode-badge--creative { color: #8B8B9E; border-color: rgba(139,139,158,0.25); background: rgba(139,139,158,0.06); }
+    .mode-badge--search   { color: var(--color-info); border-color: color-mix(in srgb, var(--color-info) 25%, transparent); background: color-mix(in srgb, var(--color-info) 6%, transparent); }
+    .mode-badge--deep-thinking { color: var(--color-warning); border-color: color-mix(in srgb, var(--color-warning) 25%, transparent); background: color-mix(in srgb, var(--color-warning) 6%, transparent); }
+    .mode-badge--creative { color: var(--color-secondary); border-color: color-mix(in srgb, var(--color-secondary) 25%, transparent); background: color-mix(in srgb, var(--color-secondary) 6%, transparent); }
     .mode-cancel {
       background: none; border: none; cursor: pointer;
       font-family: var(--font-mono); font-size: 0.5625rem;
-      color: rgba(232, 232, 237, 0.2);
+      color: color-mix(in srgb, var(--color-base-content) 20%, transparent);
       transition: color 0.15s;
     }
-    .mode-cancel:hover { color: rgba(232, 232, 237, 0.5); }
+    .mode-cancel:hover { color: color-mix(in srgb, var(--color-base-content) 50%, transparent); }
 
     /* ── Input container ── */
     .input-container {
       display: flex;
       align-items: flex-end;
       gap: 0.375rem;
-      background: rgba(255, 255, 255, 0.025);
+      background: color-mix(in srgb, var(--color-base-content) 2%, transparent);
       border: 1px solid var(--border-default);
       border-radius: 6px;
       padding: 0.4rem 0.4rem 0.4rem 0.5rem;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     .input-container:focus-within {
-      border-color: rgba(0, 255, 136, 0.22);
-      box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.03), 0 0 16px rgba(0, 255, 136, 0.06);
+      border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 5%, transparent), 0 0 16px color-mix(in srgb, var(--color-primary) 8%, transparent);
     }
     .input-container--search:focus-within {
-      border-color: rgba(91, 141, 239, 0.22);
-      box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.03);
+      border-color: color-mix(in srgb, var(--color-info) 30%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-info) 5%, transparent);
     }
     .input-container--deep-thinking:focus-within {
-      border-color: rgba(255, 184, 0, 0.22);
-      box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.03);
+      border-color: color-mix(in srgb, var(--color-warning) 30%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-warning) 5%, transparent);
     }
 
     /* ── Action icons ── */
@@ -213,14 +213,14 @@ export interface SendMessageEvent {
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      color: rgba(232, 232, 237, 0.2);
+      color: color-mix(in srgb, var(--color-base-content) 20%, transparent);
       transition: color 0.15s, background 0.15s;
     }
     .icon-btn svg { width: 14px; height: 14px; }
-    .icon-btn:hover { color: rgba(232, 232, 237, 0.5); background: rgba(255, 255, 255, 0.03); }
-    .icon-btn--active-accent  { color: #5B8DEF !important; }
-    .icon-btn--active-warning { color: #FFB800 !important; }
-    .icon-btn--active-secondary { color: #8B8B9E !important; }
+    .icon-btn:hover { color: color-mix(in srgb, var(--color-base-content) 50%, transparent); background: color-mix(in srgb, var(--color-base-content) 3%, transparent); }
+    .icon-btn--active-accent  { color: var(--color-info) !important; }
+    .icon-btn--active-warning { color: var(--color-warning) !important; }
+    .icon-btn--active-secondary { color: var(--color-secondary) !important; }
 
     /* ── Textarea ── */
     .message-textarea {
@@ -232,13 +232,13 @@ export interface SendMessageEvent {
       font-family: var(--font-mono);
       font-size: 0.8125rem;
       line-height: 1.5;
-      color: #E8E8ED;
+      color: var(--color-base-content);
       min-height: 36px;
       max-height: 200px;
       padding: 0.3rem 0;
     }
     .message-textarea::placeholder {
-      color: rgba(232, 232, 237, 0.15);
+      color: color-mix(in srgb, var(--color-base-content) 15%, transparent);
     }
 
     /* ── Send button ── */
@@ -249,23 +249,23 @@ export interface SendMessageEvent {
       width: 30px;
       height: 30px;
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      color: rgba(232, 232, 237, 0.2);
+      background: color-mix(in srgb, var(--color-base-content) 4%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-base-content) 8%, transparent);
+      color: color-mix(in srgb, var(--color-base-content) 20%, transparent);
       cursor: pointer;
       flex-shrink: 0;
       transition: all 0.2s ease;
     }
     .send-btn svg { width: 13px; height: 13px; }
     .send-btn--active {
-      background: rgba(0, 255, 136, 0.1);
-      border-color: rgba(0, 255, 136, 0.3);
-      color: #00FF88;
+      background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+      border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+      color: var(--color-primary);
     }
     .send-btn--active:hover {
-      background: rgba(0, 255, 136, 0.15);
-      border-color: rgba(0, 255, 136, 0.5);
-      box-shadow: 0 0 12px rgba(0, 255, 136, 0.12);
+      background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+      border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--color-primary) 12%, transparent);
     }
     .send-btn:disabled {
       cursor: not-allowed;
@@ -276,7 +276,7 @@ export interface SendMessageEvent {
       font-family: var(--font-mono);
       font-size: 0.5rem;
       letter-spacing: 0.06em;
-      color: rgba(232, 232, 237, 0.1);
+      color: color-mix(in srgb, var(--color-base-content) 10%, transparent);
       text-align: center;
       margin: 0;
     }

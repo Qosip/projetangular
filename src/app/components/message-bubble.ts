@@ -9,8 +9,10 @@ import { Message, getModelColor } from '../models/chat.models';
     @if (message().author.type === 'system') {
       <!-- System message -->
       <div class="flex justify-center py-2">
-        <span class="font-mono text-[10px] text-base-content/20 px-3 py-1 rounded-full
-                     border border-[var(--border-subtle)] bg-base-200/50">
+        <span class="font-mono text-[10px] px-3 py-1 rounded-full border"
+              style="color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
+                     border-color: var(--border-subtle);
+                     background: color-mix(in srgb, var(--color-base-200) 50%, transparent);">
           {{ message().content }}
         </span>
       </div>
@@ -18,7 +20,7 @@ import { Message, getModelColor } from '../models/chat.models';
       <!-- User message -->
       <div class="chat chat-end">
         <div class="chat-header mb-1">
-          <span class="font-mono text-[10px] text-base-content/30">
+          <span class="font-mono text-[10px]" style="color: color-mix(in srgb, var(--color-base-content) 40%, transparent)">
             {{ message().timestamp | date:'HH:mm' }}
           </span>
           @if (message().mode && message().mode !== 'normal') {
@@ -29,9 +31,9 @@ import { Message, getModelColor } from '../models/chat.models';
           }
         </div>
         @if (message().attachment) {
-          <div class="chat-bubble bg-base-300 mb-1 p-2">
-            <div class="flex items-center gap-2 text-xs font-mono text-base-content/60">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div class="chat-bubble mb-1 p-2" style="background: var(--surface-2)">
+            <div class="flex items-center gap-2 text-xs font-mono" style="color: color-mix(in srgb, var(--color-base-content) 60%, transparent)">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: color-mix(in srgb, var(--color-primary) 50%, transparent)" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               {{ message().attachment!.name }}
@@ -58,15 +60,15 @@ import { Message, getModelColor } from '../models/chat.models';
             {{ message().author.name }}
           </span>
         </div>
-        <div class="chat-bubble bg-base-200 text-base-content border-l-[3px]"
-             [style.border-left-color]="modelColor()">
+        <div class="chat-bubble border-l-[3px]"
+             style="background: var(--surface-1); color: var(--color-base-content); border-left-color: var(--model-color)">
           <div class="flex items-center gap-2">
             <div class="thinking-dots flex gap-1">
               <span class="w-1.5 h-1.5 rounded-full animate-bounce" [style.background]="modelColor()" style="animation-delay: 0s"></span>
               <span class="w-1.5 h-1.5 rounded-full animate-bounce" [style.background]="modelColor()" style="animation-delay: 0.15s"></span>
               <span class="w-1.5 h-1.5 rounded-full animate-bounce" [style.background]="modelColor()" style="animation-delay: 0.3s"></span>
             </div>
-            <span class="font-mono text-[10px] text-base-content/30">en réflexion...</span>
+            <span class="font-mono text-[10px]" style="color: color-mix(in srgb, var(--color-base-content) 35%, transparent)">en réflexion...</span>
           </div>
         </div>
       </div>
@@ -88,7 +90,7 @@ import { Message, getModelColor } from '../models/chat.models';
                 [style.color]="modelColor()">
             {{ message().author.name }}
           </span>
-          <span class="text-[9px] text-base-content/20 font-mono">
+          <span class="text-[9px] font-mono" style="color: color-mix(in srgb, var(--color-base-content) 25%, transparent)">
             {{ message().timestamp | date:'HH:mm' }}
             @if (message().tokens) {
               · {{ message().tokens }}tk
@@ -99,9 +101,8 @@ import { Message, getModelColor } from '../models/chat.models';
           </span>
         </div>
 
-        <div class="chat-bubble bg-base-200 text-base-content border-l-[3px]
-                    font-body leading-relaxed text-sm"
-             [style.border-left-color]="modelColor()">
+        <div class="chat-bubble border-l-[3px] font-body leading-relaxed text-sm"
+             style="background: var(--surface-1); color: var(--color-base-content); border-left-color: var(--model-color)">
           {{ message().content }}
         </div>
       </div>

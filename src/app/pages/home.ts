@@ -109,24 +109,24 @@ import { RouterLink } from '@angular/router';
     }
     .home-symbol {
       font-size: 1rem;
-      color: rgba(0, 255, 136, 0.4);
+      color: color-mix(in srgb, var(--color-primary) 60%, transparent);
       margin-bottom: 0.25rem;
     }
     .home-title {
       font-family: var(--font-display);
       font-size: 1.75rem;
       font-weight: 600;
-      color: #E8E8ED;
+      color: var(--color-base-content);
       margin: 0;
       letter-spacing: -0.01em;
     }
     .home-username {
-      color: #00FF88;
+      color: var(--color-primary);
     }
     .home-subtitle {
       font-family: var(--font-body);
       font-size: 0.875rem;
-      color: rgba(232, 232, 237, 0.35);
+      color: color-mix(in srgb, var(--color-base-content) 45%, transparent);
       margin: 0;
     }
 
@@ -137,9 +137,9 @@ import { RouterLink } from '@angular/router';
       gap: 0.5rem;
       padding: 0.65rem 1.5rem;
       background: transparent;
-      border: 1px solid rgba(0, 255, 136, 0.3);
+      border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
       border-radius: 4px;
-      color: #00FF88;
+      color: var(--color-primary);
       font-family: var(--font-mono);
       font-size: 0.7rem;
       letter-spacing: 0.12em;
@@ -158,15 +158,15 @@ import { RouterLink } from '@angular/router';
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(0, 255, 136, 0.06);
+      background: color-mix(in srgb, var(--color-primary) 8%, transparent);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.2s ease;
     }
     .new-chat-cta:hover::before { transform: scaleX(1); }
     .new-chat-cta:hover {
-      border-color: rgba(0, 255, 136, 0.55);
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.12);
+      border-color: color-mix(in srgb, var(--color-primary) 65%, transparent);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--color-primary) 15%, transparent);
     }
 
     /* ── Quick prompts ── */
@@ -181,17 +181,17 @@ import { RouterLink } from '@angular/router';
       font-family: var(--font-mono);
       font-size: 0.625rem;
       letter-spacing: 0.04em;
-      color: rgba(232, 232, 237, 0.3);
+      color: color-mix(in srgb, var(--color-base-content) 45%, transparent);
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid color-mix(in srgb, var(--color-base-content) 12%, transparent);
       border-radius: 3px;
       cursor: pointer;
       transition: all 0.15s ease;
     }
     .prompt-chip:hover {
-      color: rgba(232, 232, 237, 0.6);
-      border-color: rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.02);
+      color: color-mix(in srgb, var(--color-base-content) 80%, transparent);
+      border-color: color-mix(in srgb, var(--color-base-content) 25%, transparent);
+      background: color-mix(in srgb, var(--color-base-content) 4%, transparent);
     }
 
     /* ── Recent conversations ── */
@@ -205,7 +205,7 @@ import { RouterLink } from '@angular/router';
       font-family: var(--font-mono);
       font-size: 0.5625rem;
       letter-spacing: 0.15em;
-      color: rgba(232, 232, 237, 0.18);
+      color: color-mix(in srgb, var(--color-base-content) 30%, transparent);
       text-transform: uppercase;
       margin: 0;
     }
@@ -225,8 +225,8 @@ import { RouterLink } from '@angular/router';
       transition: all 0.15s ease;
     }
     .recent-item:hover {
-      border-color: rgba(255, 255, 255, 0.05);
-      background: rgba(255, 255, 255, 0.02);
+      border-color: color-mix(in srgb, var(--color-base-content) 10%, transparent);
+      background: color-mix(in srgb, var(--color-base-content) 4%, transparent);
     }
     .recent-dots {
       display: flex;
@@ -241,25 +241,25 @@ import { RouterLink } from '@angular/router';
     .recent-title {
       font-family: var(--font-mono);
       font-size: 0.6875rem;
-      color: rgba(232, 232, 237, 0.45);
+      color: color-mix(in srgb, var(--color-base-content) 60%, transparent);
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
     .recent-item:hover .recent-title {
-      color: rgba(232, 232, 237, 0.7);
+      color: color-mix(in srgb, var(--color-base-content) 90%, transparent);
     }
     .recent-arrow {
       width: 12px;
       height: 12px;
-      color: rgba(232, 232, 237, 0.15);
+      color: color-mix(in srgb, var(--color-base-content) 25%, transparent);
       flex-shrink: 0;
       transition: transform 0.15s, color 0.15s;
     }
     .recent-item:hover .recent-arrow {
       transform: translateX(2px);
-      color: rgba(0, 255, 136, 0.4);
+      color: color-mix(in srgb, var(--color-primary) 80%, transparent);
     }
 
     /* ── Bottom hint ── */
@@ -269,14 +269,14 @@ import { RouterLink } from '@angular/router';
       font-family: var(--font-mono);
       font-size: 0.5625rem;
       letter-spacing: 0.1em;
-      color: rgba(232, 232, 237, 0.1);
+      color: color-mix(in srgb, var(--color-base-content) 20%, transparent);
       margin: 0;
     }
 
     /* ── Cursor blink ── */
     .cursor-blink {
       animation: blink 1s step-end infinite;
-      color: rgba(0, 255, 136, 0.3);
+      color: color-mix(in srgb, var(--color-primary) 50%, transparent);
     }
     @keyframes blink {
       0%, 50% { opacity: 1; }

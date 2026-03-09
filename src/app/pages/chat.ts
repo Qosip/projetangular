@@ -17,21 +17,21 @@ import { Message } from '../models/chat.models';
           @for (msg of messages(); track msg.id) {
             <app-message-bubble [message]="msg" />
           } @empty {
-            <div class="flex flex-col items-center justify-center py-32 text-center">
-              <div class="w-16 h-16 rounded-2xl bg-primary/5 border border-primary/10
-                          flex items-center justify-center mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                </svg>
+              <div class="flex flex-col items-center justify-center py-32 text-center">
+                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
+                     style="background: color-mix(in srgb, var(--color-primary) 5%, transparent); border: 1px solid color-mix(in srgb, var(--color-primary) 10%, transparent)">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" style="color: color-mix(in srgb, var(--color-primary) 30%, transparent)" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                  </svg>
+                </div>
+                <p class="font-mono text-sm" style="color: color-mix(in srgb, var(--color-base-content) 25%, transparent)">
+                  > conversation initialisée<span class="cursor-blink" style="color: color-mix(in srgb, var(--color-primary) 40%, transparent)">_</span>
+                </p>
+                <p class="font-mono text-[10px] mt-2 max-w-xs" style="color: color-mix(in srgb, var(--color-base-content) 12%, transparent)">
+                  Envoyez un message pour lancer la discussion entre les agents IA.
+                </p>
               </div>
-              <p class="font-mono text-sm text-base-content/25">
-                > conversation initialisée<span class="cursor-blink text-primary/40">_</span>
-              </p>
-              <p class="font-mono text-[10px] text-base-content/12 mt-2 max-w-xs">
-                Envoyez un message pour lancer la discussion entre les agents IA.
-              </p>
-            </div>
           }
         </div>
       </div>
@@ -71,7 +71,7 @@ import { Message } from '../models/chat.models';
       font-family: var(--font-mono);
       font-size: 0.5625rem;
       letter-spacing: 0.1em;
-      color: rgba(232, 232, 237, 0.2);
+      color: color-mix(in srgb, var(--color-base-content) 25%, transparent);
       text-transform: uppercase;
     }
     .waiting-dot {
@@ -79,7 +79,7 @@ import { Message } from '../models/chat.models';
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: rgba(0, 255, 136, 0.4);
+      background: color-mix(in srgb, var(--color-primary) 50%, transparent);
       animation: wdot 1.2s ease-in-out infinite;
     }
     .waiting-dot:nth-child(2) { animation-delay: 0.2s; }

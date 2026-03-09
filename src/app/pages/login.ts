@@ -130,8 +130,8 @@ import { AuthService } from '../services/auth.service';
         0deg,
         transparent,
         transparent 2px,
-        rgba(255, 255, 255, 0.006) 2px,
-        rgba(255, 255, 255, 0.006) 4px
+        color-mix(in srgb, var(--color-base-content) 1%, transparent) 2px,
+        color-mix(in srgb, var(--color-base-content) 1%, transparent) 4px
       );
       pointer-events: none;
       z-index: 100;
@@ -142,7 +142,7 @@ import { AuthService } from '../services/auth.service';
       position: fixed;
       width: 32px;
       height: 32px;
-      border-color: rgba(0, 255, 136, 0.12);
+      border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
       border-style: solid;
     }
     .corner-tl { top: 20px; left: 20px; border-width: 1px 0 0 1px; }
@@ -187,7 +187,7 @@ import { AuthService } from '../services/auth.service';
 
     .logo-mark {
       font-size: 1.25rem;
-      color: #00FF88;
+      color: var(--color-primary);
       line-height: 1;
       margin-bottom: 0.25rem;
     }
@@ -197,14 +197,14 @@ import { AuthService } from '../services/auth.service';
       font-size: 1.125rem;
       font-weight: 700;
       letter-spacing: 0.2em;
-      color: #E8E8ED;
+      color: var(--color-base-content);
       margin: 0;
     }
 
     .logo-line {
       width: 48px;
       height: 1px;
-      background: linear-gradient(to right, transparent, rgba(0, 255, 136, 0.4), transparent);
+      background: linear-gradient(to right, transparent, color-mix(in srgb, var(--color-primary) 40%, transparent), transparent);
       margin-top: 0.5rem;
     }
 
@@ -213,14 +213,14 @@ import { AuthService } from '../services/auth.service';
       font-size: 0.625rem;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: rgba(232, 232, 237, 0.25);
+      color: color-mix(in srgb, var(--color-base-content) 35%, transparent);
       margin: 0 0 1.5rem 0;
       display: flex;
       align-items: center;
       gap: 0.4em;
       min-height: 1em;
     }
-    .prompt-char { color: rgba(0, 255, 136, 0.4); }
+    .prompt-char { color: color-mix(in srgb, var(--color-primary) 60%, transparent); }
 
     /* ── Form ── */
     .login-form {
@@ -238,30 +238,31 @@ import { AuthService } from '../services/auth.service';
     .field-label {
       font-size: 0.6rem;
       letter-spacing: 0.18em;
-      color: rgba(232, 232, 237, 0.3);
+      color: color-mix(in srgb, var(--color-base-content) 40%, transparent);
       user-select: none;
     }
 
     .field-input {
       width: 100%;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: color-mix(in srgb, var(--color-base-content) 3%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-base-content) 12%, transparent);
       border-radius: 4px;
       padding: 0.65rem 0.85rem;
       font-family: var(--font-mono, 'JetBrains Mono', monospace);
       font-size: 0.8125rem;
-      color: #E8E8ED;
+      color: var(--color-base-content);
       outline: none;
       transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
       box-sizing: border-box;
     }
     .field-input::placeholder {
-      color: rgba(232, 232, 237, 0.15);
+      color: color-mix(in srgb, var(--color-base-content) 25%, transparent);
     }
     .field-input:focus {
-      border-color: rgba(0, 255, 136, 0.35);
-      background: rgba(0, 255, 136, 0.025);
-      box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.05), 0 0 16px rgba(0, 255, 136, 0.08);
+      border-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+      background: color-mix(in srgb, var(--color-primary) 4%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 8%, transparent),
+                  0 0 16px color-mix(in srgb, var(--color-primary) 12%, transparent);
     }
 
     /* ── Connect button ── */
@@ -270,9 +271,9 @@ import { AuthService } from '../services/auth.service';
       width: 100%;
       padding: 0.7rem 1rem;
       background: transparent;
-      border: 1px solid rgba(0, 255, 136, 0.35);
+      border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
       border-radius: 4px;
-      color: #00FF88;
+      color: var(--color-primary);
       font-family: var(--font-mono, 'JetBrains Mono', monospace);
       font-size: 0.75rem;
       letter-spacing: 0.15em;
@@ -289,7 +290,7 @@ import { AuthService } from '../services/auth.service';
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(0, 255, 136, 0.06);
+      background: color-mix(in srgb, var(--color-primary) 8%, transparent);
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.2s ease;
@@ -342,11 +343,11 @@ import { AuthService } from '../services/auth.service';
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem 0.75rem;
-      border: 1px solid rgba(255, 59, 92, 0.25);
+      border: 1px solid color-mix(in srgb, var(--color-error) 25%, transparent);
       border-radius: 4px;
-      background: rgba(255, 59, 92, 0.06);
+      background: color-mix(in srgb, var(--color-error) 6%, transparent);
       font-size: 0.6875rem;
-      color: rgba(255, 59, 92, 0.85);
+      color: var(--color-error);
       letter-spacing: 0.04em;
       animation: error-in 0.2s ease;
     }
@@ -365,7 +366,7 @@ import { AuthService } from '../services/auth.service';
       margin-top: 1.75rem;
       font-size: 0.5625rem;
       letter-spacing: 0.12em;
-      color: rgba(232, 232, 237, 0.1);
+      color: color-mix(in srgb, var(--color-base-content) 15%, transparent);
       text-align: center;
     }
 
@@ -377,14 +378,14 @@ import { AuthService } from '../services/auth.service';
       transform: translateX(-50%);
       font-size: 0.5625rem;
       letter-spacing: 0.12em;
-      color: rgba(232, 232, 237, 0.1);
+      color: color-mix(in srgb, var(--color-base-content) 15%, transparent);
       white-space: nowrap;
     }
 
     /* ── Cursor blink ── */
     .cursor-blink {
       animation: blink 1s step-end infinite;
-      color: #00FF88;
+      color: var(--color-primary);
       opacity: 0.5;
     }
     @keyframes blink {
@@ -402,7 +403,7 @@ export class Login implements OnInit {
 
   @ViewChild('promptText') promptTextRef!: ElementRef<HTMLSpanElement>;
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService) { }
 
   ngOnInit() {
     // Typing effect for the terminal prompt
