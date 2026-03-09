@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx ng serve --open)",
+      "Bash(npx ng serve --port 4201)"
+    ]
+  }
+}
