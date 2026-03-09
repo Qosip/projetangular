@@ -27,23 +27,38 @@ export class ChatComponent implements OnInit, OnDestroy {
   completedStreaming = this.streamingService.completedMessages;
   isStreaming = this.streamingService.isStreaming;
 
+  activeModels = computed(() => this.currentChat()?.models ?? []);
+
+  filteredMessages = computed(() => {
+    const active = this.activeModels();
+    return this.chatService.messages().filter(
+      (msg) => msg.author === 'user' || active.includes(msg.author)
+    );
+  });
+
   streamingEntries = computed(() => {
     const map = this.streamingMessages();
-    return Object.entries(map).map(([author, content]) => ({ author, content }));
+    const active = this.activeModels();
+    return Object.entries(map)
+      .filter(([author]) => active.includes(author))
+      .map(([author, content]) => ({ author, content }));
+  });
+
+  filteredCompletedStreaming = computed(() => {
+    const active = this.activeModels();
+    return this.completedStreaming().filter((e) => active.includes(e.author));
   });
 
   getColor = getModelColor;
   getInitial = getModelInitial;
 
-  activeModels = computed(() => this.currentChat()?.models ?? []);
-
   private paramSub: any;
 
   constructor() {
     effect(() => {
-      this.messages();
+      this.filteredMessages();
       this.streamingMessages();
-      this.completedStreaming();
+      this.filteredCompletedStreaming();
       setTimeout(() => this.scrollToBottom(), 50);
     });
   }
@@ -67,6 +82,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     const chat = this.chatService.currentChat();
     if (!chat || this.processing()) return;
     this.chatService.sendMessage(chat.id, content);
+  }
+
+  onModelsChanged(models: string[]) {
+    const chat = this.chatService.currentChat();
+    if (!chat) return;
+    this.chatService.updateChatModels(chat.id, models);
   }
 
   private scrollToBottom() {

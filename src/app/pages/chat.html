@@ -2,7 +2,7 @@
     <!-- Messages area -->
     <div class="flex-1 overflow-y-auto scroll-smooth" #messagesContainer>
         <div class="max-w-[760px] mx-auto px-4 py-6 space-y-1">
-            @for (msg of messages(); track msg.id) {
+            @for (msg of filteredMessages(); track msg.id) {
             <app-message-bubble [message]="msg" />
             } @empty {
             <div class="flex flex-col items-center justify-center py-32 text-center">
@@ -28,12 +28,11 @@
             }
 
             <!-- Completed streaming messages (done but cycle not finished) -->
-            @for (entry of completedStreaming(); track $index) {
+            @for (entry of filteredCompletedStreaming(); track $index) {
             <div class="chat chat-start" [style.--model-color]="getColor(entry.author)">
                 <div class="chat-image avatar">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-mono font-bold
-                                transition-all duration-300"
-                        [style.background]="getColor(entry.author) + '15'"
+                                transition-all duration-300" [style.background]="getColor(entry.author) + '15'"
                         [style.color]="getColor(entry.author)"
                         [style.box-shadow]="'0 0 12px ' + getColor(entry.author) + '20'">
                         {{ getInitial(entry.author) }}
@@ -41,8 +40,7 @@
                 </div>
 
                 <div class="chat-header flex items-center gap-2 mb-1">
-                    <span class="font-mono text-[10px] uppercase tracking-wider"
-                        [style.color]="getColor(entry.author)">
+                    <span class="font-mono text-[10px] uppercase tracking-wider" [style.color]="getColor(entry.author)">
                         {{ entry.author }}
                     </span>
                 </div>
@@ -59,8 +57,7 @@
             <div class="chat chat-start" [style.--model-color]="getColor(entry.author)">
                 <div class="chat-image avatar">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-mono font-bold
-                                transition-all duration-300"
-                        [style.background]="getColor(entry.author) + '15'"
+                                transition-all duration-300" [style.background]="getColor(entry.author) + '15'"
                         [style.color]="getColor(entry.author)"
                         [style.box-shadow]="'0 0 12px ' + getColor(entry.author) + '20'">
                         {{ getInitial(entry.author) }}
@@ -68,8 +65,7 @@
                 </div>
 
                 <div class="chat-header flex items-center gap-2 mb-1">
-                    <span class="font-mono text-[10px] uppercase tracking-wider"
-                        [style.color]="getColor(entry.author)">
+                    <span class="font-mono text-[10px] uppercase tracking-wider" [style.color]="getColor(entry.author)">
                         {{ entry.author }}
                     </span>
                     <span class="text-[9px] font-mono"
@@ -104,7 +100,7 @@
             <span></span>
             }
 
-            <app-model-selector [activeModels]="activeModels()" />
+            <app-model-selector [activeModels]="activeModels()" (modelsChanged)="onModelsChanged($event)" />
         </div>
         <app-input-bar [disabled]="processing()" (messageSent)="onSendMessage($event)" />
     </div>

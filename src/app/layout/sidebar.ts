@@ -128,4 +128,14 @@ export class SidebarComponent implements OnInit {
   getChatLabel(chatId: number, title?: string): string {
     return title?.trim() ? title : `Chat #${chatId}`;
   }
+
+  toggleFavorite(chatId: number, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.chatService.toggleFavorite(chatId);
+  }
+
+  isFavorite(chatId: number): boolean {
+    return this.chatService.isFavorite(chatId);
+  }
 }

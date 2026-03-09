@@ -72,7 +72,7 @@
     <!-- Conversations List -->
     <div class="flex-1 overflow-y-auto px-2 pb-2">
         <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px;">
-            @for (chat of chatService.chats(); track chat.id) {
+            @for (chat of chatService.sortedChats(); track chat.id) {
             <li class="conv-li group relative">
 
                 <!-- Mode suppression : confirmation -->
@@ -133,8 +133,27 @@
                     @if (chat.processing) {
                     <span class="w-1.5 h-1.5 rounded-full bg-warning animate-pulse shrink-0"></span>
                     }
-                    <!-- Actions (visibles au hover) -->
-                    <span class="conv-actions flex items-center gap-0.5 shrink-0">
+                    <!-- Actions (étoile toujours visible si favori, sinon au hover) -->
+                    <span class="conv-actions flex items-center gap-0.5 shrink-0"
+                        [class.conv-actions-has-fav]="isFavorite(chat.id)">
+                        <button class="conv-action-btn" [class.conv-btn-fav-active]="isFavorite(chat.id)"
+                            [class.conv-btn-fav-idle]="!isFavorite(chat.id)"
+                            [title]="isFavorite(chat.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+                            (click)="toggleFavorite(chat.id, $event)">
+                            @if (isFavorite(chat.id)) {
+                            <!-- Étoile pleine -->
+                            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            } @else {
+                            <!-- Étoile vide (outline) -->
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            }
+                        </button>
                         <button class="conv-action-btn conv-btn-edit" title="Renommer"
                             (click)="startEdit(chat.id, chat.title, $event)">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
