@@ -35,9 +35,6 @@ const MODEL_COLORS: Record<string, string> = {
   'gpt-4': 'var(--model-gpt)',
   'claude-3': 'var(--model-claude)',
   'mistral': 'var(--model-mistral)',
-  'gemini': 'var(--model-gemini)',
-  'llama': 'var(--model-llama)',
-  'deepseek': 'var(--model-deepseek)',
 };
 
 export function getModelColor(modelId: string): string {
