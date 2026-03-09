@@ -42,9 +42,10 @@ export class InputBar {
   messageText = signal('');
   messageSent = output<string>();
 
-  onEnter(event: KeyboardEvent) {
-    if (!event.shiftKey) {
-      event.preventDefault();
+  onEnter(event: Event) {
+    const keyEvent = event as KeyboardEvent;
+    if (!keyEvent.shiftKey) {
+      keyEvent.preventDefault();
       this.send();
     }
   }
