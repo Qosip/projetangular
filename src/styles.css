@@ -1,4 +1,156 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: neuroterminal --default;
+}
+
+@theme {
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-body: 'DM Sans', sans-serif;
+  --font-display: 'Space Grotesk', 'Outfit', sans-serif;
+}
+
+/* ── Thème DaisyUI Custom "neuroterminal" ── */
+@plugin "daisyui/theme" {
+  name: "neuroterminal";
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Couleurs sémantiques */
+  --color-primary: #00FF88;
+  --color-primary-content: #0A0A0F;
+  --color-secondary: #8B8B9E;
+  --color-secondary-content: #E8E8ED;
+  --color-accent: #5B8DEF;
+  --color-accent-content: #0A0A0F;
+  --color-neutral: #13131B;
+  --color-neutral-content: #E8E8ED;
+  --color-base-100: #0E0E14;
+  --color-base-200: #13131B;
+  --color-base-300: #1A1A24;
+  --color-base-content: #E8E8ED;
+  --color-info: #5B8DEF;
+  --color-info-content: #0A0A0F;
+  --color-success: #00FF88;
+  --color-success-content: #0A0A0F;
+  --color-warning: #FFB800;
+  --color-warning-content: #0A0A0F;
+  --color-error: #FF3B5C;
+  --color-error-content: #0A0A0F;
+
+  /* Paramètres visuels */
+  --rounded-box: 0.75rem;
+  --rounded-btn: 0.5rem;
+  --rounded-badge: 99rem;
+  --tab-radius: 0.25rem;
+  --animation-btn: 0.2s;
+  --animation-input: 0.2s;
+  --btn-focus-scale: 0.98;
+  --border-btn: 1px;
+  --tab-border: 1px;
+}
+
+/* ── Variables custom additionnelles ── */
+:root {
+  --void: #0A0A0F;
+  --surface-0: #0E0E14;
+  --surface-1: #13131B;
+  --surface-2: #1A1A24;
+  --surface-3: #22222E;
+  --surface-hover: #2A2A38;
+
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-glow: rgba(0, 255, 136, 0.15);
+
+  --text-ghost: #3A3A4A;
+
+  --accent-glow: rgba(0, 255, 136, 0.25);
+  --accent-ghost: rgba(0, 255, 136, 0.06);
+
+  /* Couleurs par modèle IA */
+  --model-claude: #D4A574;
+  --model-gpt: #74B9A5;
+  --model-gemini: #7B8FD4;
+  --model-mistral: #D47B7B;
+  --model-llama: #A57BD4;
+  --model-custom: #D4C974;
+  --model-cohere: #D474A5;
+  --model-deepseek: #74D4C9;
+
+  /* Effets */
+  --scanline-color: rgba(255, 255, 255, 0.015);
+  --glow-spread: 20px;
+}
+
+/* ── Overrides DaisyUI ── */
+
+/* Boutons primary — glow terminal */
+.btn-primary {
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  transition: all 0.2s ease;
+}
+.btn-primary:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.25);
+}
+
+/* Inputs — glow au focus */
+.input:focus,
+.textarea:focus {
+  border-color: #00FF88;
+  box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.06), 0 0 20px rgba(0, 255, 136, 0.15);
+}
+
+/* Chat bubbles — sharp left, round right */
+.chat-bubble {
+  border-radius: 2px 12px 12px 2px;
+}
+.chat-end .chat-bubble {
+  border-radius: 12px 12px 2px 12px;
+}
+
+/* Cards — fond terminal */
+.card {
+  border: 1px solid var(--border-default);
+}
+
+/* Menu items */
+.menu li > a {
+  border-radius: 0.375rem;
+  transition: all 0.15s ease;
+}
+.menu li > a:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.menu li > a.active {
+  background: var(--accent-ghost);
+  border-left: 2px solid #00FF88;
+}
+
+/* Scrollbar custom */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Animations globales */
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: cursor-blink 1s step-end infinite;
+}
