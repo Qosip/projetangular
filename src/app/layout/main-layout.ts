@@ -16,6 +16,7 @@ import { ConversationService } from '../services/conversation.service';
       <div class="drawer-content flex flex-col h-screen">
         <app-topbar class="h-12 shrink-0"
                     [title]="currentTitle()"
+                    [convId]="currentConvId()"
                     [models]="currentModels()" />
 
         <main class="flex-1 overflow-hidden">
@@ -60,7 +61,7 @@ export class MainLayout {
     { initialValue: this.router.url }
   );
 
-  private currentConvId = computed(() => {
+  currentConvId = computed(() => {
     const url = this.currentUrl();
     const match = url.match(/\/chat\/(.+)/);
     return match ? match[1] : null;

@@ -30,7 +30,6 @@ import { Message } from '../models/chat.models';
               </p>
               <p class="font-mono text-[10px] text-base-content/12 mt-2 max-w-xs">
                 Envoyez un message pour lancer la discussion entre les agents IA.
-                Utilisez les boutons ci-dessous pour changer de mode.
               </p>
             </div>
           }
@@ -40,20 +39,60 @@ import { Message } from '../models/chat.models';
       <!-- Gradient fade -->
       <div class="h-6 bg-gradient-to-t from-base-100 to-transparent pointer-events-none -mt-6 relative z-10"></div>
 
-      <!-- Bottom bar with model selector + input -->
+      <!-- Bottom bar -->
       <div class="shrink-0 px-4 pb-3">
-        <div class="max-w-[760px] mx-auto flex items-center justify-end mb-1">
+        <div class="max-w-[760px] mx-auto flex items-center justify-between mb-1">
+          <!-- Waiting indicator -->
+          @if (isWaiting()) {
+            <span class="waiting-indicator">
+              <span class="waiting-dot"></span>
+              <span class="waiting-dot"></span>
+              <span class="waiting-dot"></span>
+              agents en réflexion...
+            </span>
+          } @else {
+            <span></span>
+          }
           <app-model-selector
             [activeModels]="activeModels()"
             (modelsChanged)="onModelsChanged($event)" />
         </div>
-        <app-input-bar (messageSent)="onSendMessage($event)" />
+        <app-input-bar
+          [disabled]="isWaiting()"
+          (messageSent)="onSendMessage($event)" />
       </div>
     </div>
+  `,
+  styles: `
+    .waiting-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.5625rem;
+      letter-spacing: 0.1em;
+      color: rgba(232, 232, 237, 0.2);
+      text-transform: uppercase;
+    }
+    .waiting-dot {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(0, 255, 136, 0.4);
+      animation: wdot 1.2s ease-in-out infinite;
+    }
+    .waiting-dot:nth-child(2) { animation-delay: 0.2s; }
+    .waiting-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes wdot {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(0.7); }
+      40%            { opacity: 1;   transform: scale(1); }
+    }
   `
 })
 export class Chat implements OnInit, OnDestroy {
   messagesContainer = viewChild<ElementRef>('messagesContainer');
+  isWaiting = signal(false);
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -99,7 +138,7 @@ export class Chat implements OnInit, OnDestroy {
 
   onSendMessage(event: SendMessageEvent) {
     const id = this.convId();
-    if (!id) return;
+    if (!id || this.isWaiting()) return;
 
     const userMsg: Message = {
       id: Date.now().toString(),
@@ -114,13 +153,13 @@ export class Chat implements OnInit, OnDestroy {
     this.convService.addMessage(id, userMsg);
     setTimeout(() => this.scrollToBottom(), 50);
 
-    // If mode is special, add a system message
+    // System messages for special modes
     if (event.mode === 'search') {
       setTimeout(() => {
         this.convService.addMessage(id, {
           id: `sys-${Date.now()}`,
           conversationId: id,
-          content: '⌕ Recherche web en cours... 3 sources trouvées',
+          content: '⌕ Recherche web — 3 sources trouvées',
           author: { type: 'system', name: 'System' },
           timestamp: new Date(),
         });
@@ -131,7 +170,7 @@ export class Chat implements OnInit, OnDestroy {
         this.convService.addMessage(id, {
           id: `sys-${Date.now()}`,
           conversationId: id,
-          content: '◈ Mode Deep Thinking activé — analyse approfondie en cours',
+          content: '◈ Deep Thinking activé — analyse en cours',
           author: { type: 'system', name: 'System' },
           timestamp: new Date(),
         });
@@ -139,12 +178,17 @@ export class Chat implements OnInit, OnDestroy {
       }, 300);
     }
 
-    // Simulate AI responses from active models
-    this.convService.simulateAiResponses(id, event.content, this.activeModels());
+    // Lock input while AI is responding
+    this.isWaiting.set(true);
+    const maxDelay = this.convService.simulateAiResponses(id, event.content, this.activeModels());
+    setTimeout(() => {
+      this.isWaiting.set(false);
+      this.scrollToBottom();
+    }, maxDelay + 200);
 
-    // Keep scrolling as responses come in
-    const scrollInterval = setInterval(() => this.scrollToBottom(), 500);
-    setTimeout(() => clearInterval(scrollInterval), 10000);
+    // Auto-scroll during generation
+    const scrollInterval = setInterval(() => this.scrollToBottom(), 400);
+    setTimeout(() => clearInterval(scrollInterval), maxDelay + 500);
   }
 
   private scrollToBottom() {

@@ -1,8 +1,11 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { getModelColor, AI_MODELS } from '../models/chat.models';
+import { ConversationService } from '../services/conversation.service';
 
 @Component({
   selector: 'app-topbar',
+  imports: [FormsModule],
   template: `
     <header class="topbar">
       <!-- Hamburger (mobile) -->
@@ -12,10 +15,30 @@ import { getModelColor, AI_MODELS } from '../models/chat.models';
         </svg>
       </label>
 
-      <!-- Title -->
-      <span class="topbar-title">
-        {{ title() || '&gt; terminal' }}
-      </span>
+      <!-- Title (editable when in a conversation) -->
+      <div class="title-area">
+        @if (convId() && isEditing()) {
+          <input
+            class="title-input"
+            [(ngModel)]="editValue"
+            (blur)="saveRename()"
+            (keydown.enter)="saveRename()"
+            (keydown.escape)="cancelRename()"
+            #titleInput
+            maxlength="60"
+            autofocus />
+        } @else if (convId() && title()) {
+          <button class="title-btn" (click)="startRename()" title="Renommer">
+            <span class="title-text">{{ title() }}</span>
+            <svg class="edit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </button>
+        } @else {
+          <span class="title-placeholder">&gt; terminal</span>
+        }
+      </div>
 
       <!-- Active model chips -->
       <div class="model-chips">
@@ -57,29 +80,88 @@ import { getModelColor, AI_MODELS } from '../models/chat.models';
       background: rgba(255, 255, 255, 0.03);
     }
     .hamburger svg { width: 18px; height: 18px; }
+    @media (max-width: 1023px) { .hamburger { display: flex; } }
 
-    @media (max-width: 1023px) {
-      .hamburger { display: flex; }
+    /* ── Title area ── */
+    .title-area {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      min-width: 0;
     }
 
-    .topbar-title {
+    .title-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: none;
+      padding: 0.25rem 0.35rem;
+      margin-left: -0.35rem;
+      border-radius: 3px;
+      cursor: pointer;
+      max-width: 100%;
+      transition: background 0.15s;
+      min-width: 0;
+    }
+    .title-btn:hover { background: rgba(255, 255, 255, 0.04); }
+    .title-btn:hover .edit-icon { opacity: 1; }
+
+    .title-text {
       font-family: var(--font-mono);
       font-size: 0.6875rem;
-      letter-spacing: 0.08em;
-      color: rgba(232, 232, 237, 0.3);
-      flex: 1;
+      letter-spacing: 0.05em;
+      color: rgba(232, 232, 237, 0.5);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .title-btn:hover .title-text { color: rgba(232, 232, 237, 0.75); }
+
+    .edit-icon {
+      width: 11px;
+      height: 11px;
+      color: rgba(0, 255, 136, 0.35);
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.15s;
     }
 
+    .title-input {
+      flex: 1;
+      background: rgba(0, 255, 136, 0.04);
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 3px;
+      padding: 0.2rem 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.04em;
+      color: rgba(232, 232, 237, 0.75);
+      outline: none;
+      width: 100%;
+      min-width: 0;
+    }
+    .title-input:focus {
+      border-color: rgba(0, 255, 136, 0.35);
+      box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.04);
+    }
+
+    .title-placeholder {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      color: rgba(232, 232, 237, 0.2);
+    }
+
+    /* ── Model chips ── */
     .model-chips {
       display: flex;
       align-items: center;
       gap: 0.3rem;
       flex-shrink: 0;
     }
-
     .model-chip {
       display: flex;
       align-items: center;
@@ -92,7 +174,6 @@ import { getModelColor, AI_MODELS } from '../models/chat.models';
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
-
     .model-dot {
       width: 5px;
       height: 5px;
@@ -104,10 +185,33 @@ import { getModelColor, AI_MODELS } from '../models/chat.models';
 export class Topbar {
   title = input<string>('');
   models = input<string[]>([]);
+  convId = input<string | null>(null);
+
+  private convService = inject(ConversationService);
+
+  isEditing = signal(false);
+  editValue = '';
 
   getColor = getModelColor;
 
   getModelName(id: string): string {
     return AI_MODELS[id]?.name ?? id;
+  }
+
+  startRename() {
+    this.editValue = this.title();
+    this.isEditing.set(true);
+  }
+
+  saveRename() {
+    const id = this.convId();
+    if (id && this.editValue.trim()) {
+      this.convService.renameConversation(id, this.editValue);
+    }
+    this.isEditing.set(false);
+  }
+
+  cancelRename() {
+    this.isEditing.set(false);
   }
 }

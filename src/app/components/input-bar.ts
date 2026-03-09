@@ -1,4 +1,4 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, output, signal, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatMode } from '../models/chat.models';
 
@@ -38,7 +38,7 @@ export interface SendMessageEvent {
         }
 
         <!-- Main input container -->
-        <div class="input-container" [class]="'input-container--' + activeMode()">
+        <div class="input-container" [class]="'input-container--' + activeMode()" [class.input-container--locked]="disabled()">
 
           <!-- Action icons -->
           <div class="action-icons">
@@ -79,17 +79,18 @@ export interface SendMessageEvent {
           <!-- Textarea -->
           <textarea
             class="message-textarea"
-            [placeholder]="getPlaceholder()"
+            [placeholder]="disabled() ? '> agents en réflexion...' : getPlaceholder()"
             [(ngModel)]="messageText"
             (keydown.enter)="onEnter($event)"
+            [disabled]="disabled()"
             rows="1">
           </textarea>
 
           <!-- Send button -->
           <button
             class="send-btn"
-            [class.send-btn--active]="messageText().trim() || attachedFile()"
-            [disabled]="!messageText().trim() && !attachedFile()"
+            [class.send-btn--active]="(messageText().trim() || attachedFile()) && !disabled()"
+            [disabled]="(!messageText().trim() && !attachedFile()) || disabled()"
             (click)="send()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -136,6 +137,14 @@ export interface SendMessageEvent {
       transition: color 0.15s;
     }
     .attachment-remove:hover { color: rgba(255, 59, 92, 0.6); }
+
+    .input-container--locked {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .input-container--locked .message-textarea {
+      cursor: not-allowed;
+    }
 
     /* ── Mode badge ── */
     .mode-badge-row {
@@ -274,6 +283,7 @@ export interface SendMessageEvent {
   `
 })
 export class InputBar {
+  disabled = input<boolean>(false);
   messageText = signal('');
   activeMode = signal<ChatMode>('normal');
   attachedFile = signal<string | null>(null);

@@ -64,11 +64,19 @@ export class ConversationService {
     });
   }
 
+  renameConversation(id: string, title: string): void {
+    this.conversationsMap.update(map => {
+      const conv = map[id];
+      if (!conv) return map;
+      return { ...map, [id]: { ...conv, title: title.trim() || conv.title } };
+    });
+  }
+
   getMessages(conversationId: string): Message[] {
     return this.conversationsMap()[conversationId]?.messages ?? [];
   }
 
-  simulateAiResponses(conversationId: string, userMessage: string, models: string[]): void {
+  simulateAiResponses(conversationId: string, userMessage: string, models: string[]): number {
     const responsePool: Record<string, string[]> = {
       'claude': [
         'C\'est une question fascinante. En analysant les différentes perspectives, je dirais que l\'essentiel est de maintenir un équilibre entre innovation et éthique.',
@@ -81,9 +89,9 @@ export class ConversationService {
         'Pour enrichir cette discussion, je propose de considérer les aspects socio-économiques qui sont souvent sous-estimés dans ce type d\'analyse.',
       ],
       'gemini': [
-        'Intéressant ! Je voudrais apporter une perspective complémentaire basée sur les dernières avancées dans ce domaine. Les tendances actuelles montrent...',
+        'Intéressant ! Je voudrais apporter une perspective complémentaire basée sur les dernières avancées dans ce domaine.',
         'C\'est un sujet qui mérite une analyse multicouche. En croisant différentes sources, on peut observer des patterns émergents assez révélateurs.',
-        'Pour compléter ce qui a été dit, les données empiriques suggèrent une corrélation forte entre ces variables, ce qui ouvre de nouvelles pistes.',
+        'Pour compléter ce qui a été dit, les données empiriques suggèrent une corrélation forte entre ces variables.',
       ],
       'mistral': [
         'Mon analyse de la situation est la suivante : il y a des arguments solides des deux côtés, mais les preuves penchent légèrement vers...',
@@ -93,21 +101,21 @@ export class ConversationService {
       'llama': [
         'D\'un point de vue technique, cette question soulève des enjeux importants. Les architectures actuelles permettent d\'envisager des solutions innovantes.',
         'Pour ma part, je pense que l\'approche la plus prometteuse combine des éléments de chaque perspective mentionnée précédemment.',
-        'C\'est un domaine en pleine évolution. Les dernières publications montrent des résultats encourageants dans cette direction.',
       ],
       'deepseek': [
         'En analysant en profondeur ce sujet, plusieurs couches de complexité se révèlent. Ma recherche indique que les facteurs les plus déterminants sont...',
         'Je voudrais proposer un cadre d\'analyse systématique. En décomposant le problème, on identifie trois axes principaux de réflexion.',
-        'Mes recherches approfondies sur ce sujet révèlent des insights intéressants qui n\'ont pas encore été mentionnés dans cette discussion.',
       ],
     };
 
+    let maxDelay = 0;
+
     models.forEach((modelId, index) => {
       const delay = 1500 + (index * 1500) + Math.random() * 1000;
+      if (delay > maxDelay) maxDelay = delay;
       const model = AI_MODELS[modelId];
       if (!model) return;
 
-      // Add thinking indicator
       const thinkingId = `thinking-${Date.now()}-${modelId}`;
       const thinkingMsg: Message = {
         id: thinkingId,
@@ -123,7 +131,6 @@ export class ConversationService {
       }, delay - 800);
 
       setTimeout(() => {
-        // Remove thinking, add real message
         this.conversationsMap.update(map => {
           const conv = map[conversationId];
           if (!conv) return map;
@@ -146,5 +153,7 @@ export class ConversationService {
         this.addMessage(conversationId, aiMsg);
       }, delay);
     });
+
+    return maxDelay;
   }
 }
