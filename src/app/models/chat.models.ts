@@ -1,56 +1,48 @@
-export type ChatMode = 'normal' | 'search' | 'deep-thinking' | 'creative';
+export interface Chat {
+  id: number;
+  models: string[];
+  rounds: number;
+  processing: boolean;
+  created_at: string;
+}
 
 export interface Message {
-  id: string;
-  conversationId: string;
+  id: number;
+  chat_id: number;
+  author: string;
   content: string;
-  author: MessageAuthor;
-  timestamp: Date;
-  tokens?: number;
-  latency?: number;
-  isStreaming?: boolean;
-  mode?: ChatMode;
-  attachment?: Attachment;
+  created_at: string;
 }
 
-export interface Attachment {
-  type: 'image' | 'file';
-  name: string;
-}
-
-export interface MessageAuthor {
-  type: 'user' | 'ai' | 'system';
-  name: string;
-  model?: string;
-}
-
-export interface Conversation {
-  id: string;
-  title: string;
-  models: string[];
+export interface MessagesResponse {
+  processing: boolean;
   messages: Message[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface AiModel {
   id: string;
   name: string;
-  color: string;
-  icon: string;
 }
 
-export const AI_MODELS: Record<string, AiModel> = {
-  'claude':   { id: 'claude',   name: 'Claude',   color: 'var(--model-claude)',   icon: 'C' },
-  'gpt-4':    { id: 'gpt-4',    name: 'GPT-4',    color: 'var(--model-gpt)',      icon: 'G' },
-  'gemini':   { id: 'gemini',   name: 'Gemini',   color: 'var(--model-gemini)',   icon: 'Ge' },
-  'mistral':  { id: 'mistral',  name: 'Mistral',  color: 'var(--model-mistral)',  icon: 'M' },
-  'llama':    { id: 'llama',    name: 'LLaMA',    color: 'var(--model-llama)',    icon: 'L' },
-  'deepseek': { id: 'deepseek', name: 'DeepSeek', color: 'var(--model-deepseek)', icon: 'D' },
+export interface ModelConfig {
+  id: number;
+  name: string;
+  models: string[];
+}
+
+const MODEL_COLORS: Record<string, string> = {
+  'gpt-4': 'var(--model-gpt)',
+  'claude-3': 'var(--model-claude)',
+  'mistral': 'var(--model-mistral)',
+  'gemini': 'var(--model-gemini)',
+  'llama': 'var(--model-llama)',
+  'deepseek': 'var(--model-deepseek)',
 };
 
-export const ALL_MODEL_IDS = Object.keys(AI_MODELS);
-
 export function getModelColor(modelId: string): string {
-  return AI_MODELS[modelId]?.color ?? 'var(--model-custom)';
+  return MODEL_COLORS[modelId] ?? 'var(--model-custom)';
+}
+
+export function getModelInitial(modelId: string): string {
+  return modelId.substring(0, 2).toUpperCase();
 }

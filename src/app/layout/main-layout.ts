@@ -1,10 +1,10 @@
 import { Component, inject, computed } from '@angular/core';
-import { RouterOutlet, ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
-import { SidebarComponent } from './sidebar.component';
-import { TopbarComponent } from './topbar.component';
-import { ConversationService } from '../services/conversation.service';
+import { SidebarComponent } from './sidebar';
+import { TopbarComponent } from './topbar';
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -15,15 +15,13 @@ import { ConversationService } from '../services/conversation.service';
 
       <div class="drawer-content flex flex-col h-screen">
         <app-topbar class="h-12 shrink-0"
-                    [title]="currentTitle()"
-                    [convId]="currentConvId()"
+                    [chatId]="currentChatId()"
                     [models]="currentModels()" />
 
         <main class="flex-1 overflow-hidden">
           <router-outlet />
         </main>
 
-        <!-- Status Bar -->
         <div class="h-7 shrink-0 flex items-center px-4 border-t border-[var(--border-subtle)]
                     text-[9px] font-mono text-base-content/20 gap-4 bg-base-200/30">
           <span class="flex items-center gap-1.5">
@@ -32,7 +30,7 @@ import { ConversationService } from '../services/conversation.service';
           </span>
           <span class="hidden sm:inline">NeuroTerminal v1.0</span>
           <span class="flex-1"></span>
-          <span>{{ currentModels().length }} modèles actifs</span>
+          <span>{{ currentModels().length }} modeles actifs</span>
         </div>
       </div>
 
@@ -50,7 +48,7 @@ import { ConversationService } from '../services/conversation.service';
   `
 })
 export class MainLayout {
-  private convService = inject(ConversationService);
+  private chatService = inject(ChatService);
   private router = inject(Router);
 
   private currentUrl = toSignal(
@@ -61,23 +59,14 @@ export class MainLayout {
     { initialValue: this.router.url }
   );
 
-  currentConvId = computed(() => {
+  currentChatId = computed(() => {
     const url = this.currentUrl();
-    const match = url.match(/\/chat\/(.+)/);
-    return match ? match[1] : null;
-  });
-
-  currentTitle = computed(() => {
-    const id = this.currentConvId();
-    if (!id) return '';
-    const conv = this.convService.getConversation(id);
-    return conv?.title ?? '';
+    const match = url.match(/\/chat\/(\d+)/);
+    return match ? +match[1] : null;
   });
 
   currentModels = computed(() => {
-    const id = this.currentConvId();
-    if (!id) return [];
-    const conv = this.convService.getConversation(id);
-    return conv?.models ?? [];
+    const chat = this.chatService.currentChat();
+    return chat?.models ?? [];
   });
 }

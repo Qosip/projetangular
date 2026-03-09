@@ -1,20 +1,28 @@
-import { Injectable } from '@angular/core';
-import { User } from '../models/user.models';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { LoginRequest, LoginResponse } from '../models/auth.models';
+
+const API = 'http://localhost:3333';
 
 @Injectable({ providedIn: 'root' })
 export class AuthRepository {
-    private readonly STORAGE_KEY = 'neuro_user';
+  private http = inject(HttpClient);
+  private readonly TOKEN_KEY = 'auth_token';
 
-    getUser(): User | null {
-        const saved = localStorage.getItem(this.STORAGE_KEY);
-        return saved ? JSON.parse(saved) : null;
-    }
+  login(credentials: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${API}/auth/login`, credentials);
+  }
 
-    saveUser(user: User): void {
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
-    }
+  saveToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
 
-    removeUser(): void {
-        localStorage.removeItem(this.STORAGE_KEY);
-    }
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  removeToken(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
 }

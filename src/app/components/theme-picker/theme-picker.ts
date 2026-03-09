@@ -3,8 +3,8 @@ import { ThemeService, THEMES } from '../../services/theme.service';
 
 @Component({
     selector: 'app-theme-picker',
-    templateUrl: './theme-picker.component.html',
-    styleUrl: './theme-picker.component.css'
+    templateUrl: './theme-picker.html',
+    styleUrl: './theme-picker.css'
 })
 export class ThemePickerComponent {
     themeService = inject(ThemeService);

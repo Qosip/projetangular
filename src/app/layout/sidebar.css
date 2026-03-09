@@ -1,0 +1,43 @@
+.new-chat-btn {
+    padding: 0.45rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+    background: color-mix(in srgb, var(--color-primary) 6%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 16%, transparent);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.new-chat-btn:hover {
+    background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+    border-color: color-mix(in srgb, var(--color-primary) 32%, transparent);
+    color: var(--color-primary);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--color-primary) 10%, transparent);
+}
+
+.conv-item {
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.12s ease;
+}
+
+.conv-item:hover {
+    background: color-mix(in srgb, var(--color-base-content) 4%, transparent);
+}
+
+.active-conv {
+    background: color-mix(in srgb, var(--color-primary) 6%, transparent) !important;
+    border-left: 2px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
+}
+
+.active-conv span {
+    color: color-mix(in srgb, var(--color-base-content) 80%, transparent) !important;
+}
+
+.logout-btn:hover {
+    color: var(--color-error) !important;
+}

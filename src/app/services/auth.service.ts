@@ -1,35 +1,44 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from '../models/user.models';
 import { AuthRepository } from '../repositories/auth.repository';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private currentUser = signal<User | null>(null);
+  private router = inject(Router);
+  private repo = inject(AuthRepository);
 
-  user = this.currentUser.asReadonly();
-  isLoggedIn = computed(() => this.currentUser() !== null);
+  private readonly USERNAME_KEY = 'auth_username';
 
-  constructor(private router: Router, private authRepository: AuthRepository) {
-    const saved = this.authRepository.getUser();
-    if (saved) {
-      this.currentUser.set(saved);
-    }
-  }
+  isLoggedIn = signal(!!this.repo.getToken());
+  username = signal(localStorage.getItem(this.USERNAME_KEY) ?? '');
+  error = signal('');
+  loading = signal(false);
 
-  login(username: string): void {
-    const user: User = {
-      username,
-      avatar: username.substring(0, 2).toUpperCase(),
-    };
-    this.currentUser.set(user);
-    this.authRepository.saveUser(user);
-    this.router.navigate(['/']);
+  login(displayName: string): void {
+    this.loading.set(true);
+    this.error.set('');
+
+    this.repo.login({ email: 'student@test.com', password: 'password' }).subscribe({
+      next: (res) => {
+        this.repo.saveToken(res.token);
+        localStorage.setItem(this.USERNAME_KEY, displayName);
+        this.username.set(displayName);
+        this.isLoggedIn.set(true);
+        this.loading.set(false);
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.error.set(err.error?.error ?? 'Erreur de connexion');
+      },
+    });
   }
 
   logout(): void {
-    this.currentUser.set(null);
-    this.authRepository.removeUser();
+    this.repo.removeToken();
+    localStorage.removeItem(this.USERNAME_KEY);
+    this.username.set('');
+    this.isLoggedIn.set(false);
     this.router.navigate(['/login']);
   }
 }

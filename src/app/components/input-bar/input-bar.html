@@ -1,0 +1,31 @@
+<div class="input-bar-root">
+    <div class="input-bar-inner">
+
+        <!-- Main input container -->
+        <div class="input-container" [class.input-container--locked]="disabled()">
+
+            <!-- Textarea -->
+            <textarea class="message-textarea"
+                [placeholder]="getPlaceholder()"
+                [(ngModel)]="messageText"
+                (keydown.enter)="onEnter($event)"
+                [disabled]="disabled()"
+                rows="1">
+            </textarea>
+
+            <!-- Send button -->
+            <button class="send-btn"
+                [class.send-btn--active]="messageText().trim() && !disabled()"
+                [disabled]="!messageText().trim() || disabled()"
+                (click)="send()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                </svg>
+            </button>
+        </div>
+
+        <p class="input-hint">&#8629; envoyer &nbsp;&middot;&nbsp; Shift+&#8629; retour ligne</p>
+
+    </div>
+</div>

@@ -5,9 +5,9 @@
 
         <!-- Greeting -->
         <div class="home-header">
-            <div class="home-symbol">◆</div>
+            <div class="home-symbol">&#9670;</div>
             <h1 class="home-title">
-                Bonjour, <span class="home-username">{{ username()?.username ?? 'Opérateur' }}</span>
+                Bonjour, <span class="home-username">{{ auth.username() || 'Operateur' }}</span>
             </h1>
             <p class="home-subtitle">
                 Initiez une discussion de groupe avec vos agents IA.
@@ -22,22 +22,9 @@
             <span>Nouveau Chat</span>
         </button>
 
-        <!-- Quick prompts -->
-        <div class="quick-prompts">
-            <button class="prompt-chip" (click)="createChatWithPrompt()">
-                Comparez vos réponses sur un sujet
-            </button>
-            <button class="prompt-chip" (click)="createChatWithPrompt()">
-                Débattez de l'IA générative
-            </button>
-            <button class="prompt-chip" (click)="createChatWithPrompt()">
-                Expliquez le machine learning
-            </button>
-        </div>
-
         <!-- Recent conversations -->
-        @if (conversations().length > 0) {
-        <app-recent-conversations [conversations]="conversations().slice(0, 4)" />
+        @if (chats().length > 0) {
+        <app-recent-conversations [chats]="chats().slice(0, 4)" />
         }
 
     </div>

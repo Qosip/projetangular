@@ -1,0 +1,44 @@
+@if (isUser()) {
+<!-- User message -->
+<div class="chat chat-end">
+    <div class="chat-header mb-1">
+        <span class="font-mono text-[10px]"
+            style="color: color-mix(in srgb, var(--color-base-content) 40%, transparent)">
+            {{ time() | date:'HH:mm' }}
+        </span>
+    </div>
+    <div class="chat-bubble bg-primary text-primary-content font-body leading-relaxed text-sm">
+        {{ message().content }}
+    </div>
+</div>
+} @else {
+<!-- AI message -->
+<div class="chat chat-start" [style.--model-color]="modelColor()">
+    <div class="chat-image avatar">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-mono font-bold
+                    transition-all duration-300"
+            [style.background]="modelColor() + '15'"
+            [style.color]="modelColor()"
+            [style.box-shadow]="'0 0 12px ' + modelColor() + '20'">
+            {{ modelInitial() }}
+        </div>
+    </div>
+
+    <div class="chat-header flex items-center gap-2 mb-1">
+        <span class="font-mono text-[10px] uppercase tracking-wider"
+            [style.color]="modelColor()">
+            {{ message().author }}
+        </span>
+        <span class="text-[9px] font-mono"
+            style="color: color-mix(in srgb, var(--color-base-content) 25%, transparent)">
+            {{ time() | date:'HH:mm' }}
+        </span>
+    </div>
+
+    <div class="chat-bubble border-l-[3px] font-body leading-relaxed text-sm"
+        style="background: var(--surface-1); color: var(--color-base-content); border-left-color: var(--model-color)">
+        {{ message().content }}@if (isStreaming()) {<span class="cursor-blink"
+            style="color: var(--model-color)">_</span>}
+    </div>
+</div>
+}

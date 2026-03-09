@@ -1,0 +1,18 @@
+<div class="recent-section">
+    <p class="recent-label">&gt; conversations recentes</p>
+    <div class="recent-list">
+        @for (chat of chats(); track chat.id) {
+        <a [routerLink]="['/chat', chat.id]" class="recent-item">
+            <div class="recent-dots">
+                @for (model of chat.models.slice(0, 3); track model) {
+                <span class="recent-dot" [style.background]="getColor(model)"></span>
+                }
+            </div>
+            <span class="recent-title">Chat #{{ chat.id }}</span>
+            <svg class="recent-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </a>
+        }
+    </div>
+</div>

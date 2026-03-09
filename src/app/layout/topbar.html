@@ -1,0 +1,27 @@
+<header class="topbar">
+    <!-- Hamburger (mobile) -->
+    <label for="sidebar-toggle" class="hamburger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </label>
+
+    <!-- Title -->
+    <div class="title-area">
+        @if (chatId()) {
+        <span class="title-text">Chat #{{ chatId() }}</span>
+        } @else {
+        <span class="title-placeholder">&gt; terminal</span>
+        }
+    </div>
+
+    <!-- Active model chips -->
+    <div class="model-chips">
+        @for (modelId of models(); track modelId) {
+        <span class="model-chip" [style.color]="getColor(modelId)" [style.border-color]="getColor(modelId) + '25'">
+            <span class="model-dot" [style.background]="getColor(modelId)"></span>
+            {{ modelId }}
+        </span>
+        }
+    </div>
+</header>

@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layout/main-layout';
-import { HomeComponent } from './pages/home.component';
-import { ChatComponent } from './pages/chat.component';
-import { LoginComponent } from './pages/login.component';
+import { HomeComponent } from './pages/home';
+import { ChatComponent } from './pages/chat';
+import { LoginComponent } from './pages/login';
 import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
