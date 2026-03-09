@@ -1,6 +1,6 @@
 import { Component, input, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Message, getModelColor, getModelInitial } from '../../models/chat.models';
+import { Message, getModelColor, getModelInitial, getModelLogo } from '../../models/chat.models';
 
 @Component({
   selector: 'app-message-bubble',
@@ -15,6 +15,8 @@ export class MessageBubbleComponent {
   isUser = computed(() => this.message().author === 'user');
 
   modelColor = computed(() => getModelColor(this.message().author));
+
+  modelLogo = computed(() => getModelLogo(this.message().author));
 
   modelInitial = computed(() => getModelInitial(this.message().author));
 

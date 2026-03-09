@@ -23,8 +23,10 @@
                 class="flex items-center gap-2 w-full px-2 py-1.5 rounded-lg
                        text-xs font-mono transition-all duration-150 hover:bg-base-300/50"
                 [class.opacity-40]="!isActive(model.id)">
-                <span class="model-dot"
-                    [style.background]="getColor(model.id)">
+                <span class="logo-mask flex-shrink-0 w-4 h-4 rounded-sm"
+                      [style.background-color]="getColor(model.id)"
+                      [style.-webkit-mask-image]="'url(' + getLogo(model.id) + ')'"
+                      [style.mask-image]="'url(' + getLogo(model.id) + ')'">
                 </span>
                 <span class="flex-1 text-left"
                     [style.color]="isActive(model.id) ? getColor(model.id) : ''">

@@ -208,6 +208,8 @@
   --model-deepseek: #74D4C9;
 }
 
+
+
 /* Surfaces et bordures abstraites */
 [data-theme] {
   --surface-0: var(--color-base-100);
