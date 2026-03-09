@@ -4,6 +4,8 @@
 /cours_angular
 NEURO*.md
 API.md
+.claude/
+.vscode/
 
 # Compiled output
 /dist
