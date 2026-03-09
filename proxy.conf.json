@@ -1,0 +1,20 @@
+{
+    "/chats": {
+        "target": "http://localhost:3333",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/auth": {
+        "target": "http://localhost:3333",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/models": {
+        "target": "http://localhost:3333",
+        "secure": false,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+}

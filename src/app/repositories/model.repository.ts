@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AiModel } from '../models/chat.models';
 
-const API = 'http://localhost:3333';
+const API = '';
 
 @Injectable({ providedIn: 'root' })
 export class ModelRepository {

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginRequest, LoginResponse } from '../models/auth.models';
 
-const API = 'http://localhost:3333';
+const API = '';
 
 @Injectable({ providedIn: 'root' })
 export class AuthRepository {

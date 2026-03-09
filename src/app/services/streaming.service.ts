@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-const API = 'http://localhost:3333';
+const API = '';
 
 export interface StreamingMessage {
   author: string;
