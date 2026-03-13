@@ -2,56 +2,22 @@ import { Injectable, signal, inject, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChatRepository } from '../repositories/chat.repository';
 import { StreamingService } from './streaming.service';
+import { ChatStorageService } from './chat-storage.service';
 import { Chat, Message } from '../models/chat.models';
-
-const TITLES_KEY = 'neuroterminal_chat_titles';
-const DELETED_KEY = 'neuroterminal_deleted_chats';
-const FAVORITES_KEY = 'neuroterminal_favorite_chats';
-
-function getDeletedIds(): Set<number> {
-  try {
-    const arr = JSON.parse(localStorage.getItem(DELETED_KEY) ?? '[]') as number[];
-    return new Set(arr);
-  } catch {
-    return new Set();
-  }
-}
-
-function getStoredTitles(): Record<number, string> {
-  try {
-    return JSON.parse(localStorage.getItem(TITLES_KEY) ?? '{}');
-  } catch {
-    return {};
-  }
-}
-
-function getStoredFavorites(): Set<number> {
-  try {
-    const arr = JSON.parse(localStorage.getItem(FAVORITES_KEY) ?? '[]') as number[];
-    return new Set(arr);
-  } catch {
-    return new Set();
-  }
-}
-
-function applyStoredTitle(chat: Chat): Chat {
-  const stored = getStoredTitles();
-  return stored[chat.id] ? { ...chat, title: stored[chat.id] } : chat;
-}
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
   private repo = inject(ChatRepository);
   private router = inject(Router);
+  private storage = inject(ChatStorageService);
   streaming = inject(StreamingService);
 
   chats = signal<Chat[]>([]);
   currentChat = signal<Chat | null>(null);
   messages = signal<Message[]>([]);
   processing = signal(false);
-  favoriteIds = signal<Set<number>>(getStoredFavorites());
+  favoriteIds = signal<Set<number>>(this.storage.getStoredFavorites());
 
-  /** Chats triés : favoris en premier, puis le reste dans l'ordre original */
   sortedChats = computed(() => {
     const favIds = this.favoriteIds();
     const all = this.chats();
@@ -64,9 +30,9 @@ export class ChatService {
   loadChats(): void {
     this.repo.listChats().subscribe({
       next: (chats) => {
-        const deleted = getDeletedIds();
+        const deleted = this.storage.getDeletedIds();
         this.chats.set(
-          chats.filter((c) => !deleted.has(c.id)).map(applyStoredTitle)
+          chats.filter((c) => !deleted.has(c.id)).map((c) => this.storage.applyStoredTitle(c))
         );
       },
     });
@@ -75,8 +41,8 @@ export class ChatService {
   loadChat(id: number): void {
     this.repo.getChat(id).subscribe({
       next: (chat) => {
-        if (getDeletedIds().has(chat.id)) return;
-        this.currentChat.set(applyStoredTitle(chat));
+        if (this.storage.getDeletedIds().has(chat.id)) return;
+        this.currentChat.set(this.storage.applyStoredTitle(chat));
       },
     });
   }
@@ -104,7 +70,6 @@ export class ChatService {
       next: (msg) => {
         this.messages.update((list) => [...list, msg]);
         this.processing.set(true);
-
         this.streaming.startStream(chatId, () => {
           this.loadMessages(chatId);
           this.loadChats();
@@ -126,23 +91,10 @@ export class ChatService {
     this.streaming.stopStream();
   }
 
-  /** Suppression locale persistée via localStorage */
   deleteChat(id: number): void {
-    const deleted = getDeletedIds();
-    deleted.add(id);
-    localStorage.setItem(DELETED_KEY, JSON.stringify([...deleted]));
-
-    const stored = getStoredTitles();
-    delete stored[id];
-    localStorage.setItem(TITLES_KEY, JSON.stringify(stored));
-
-    // Retirer des favoris si besoin
-    const favs = new Set(this.favoriteIds());
-    if (favs.has(id)) {
-      favs.delete(id);
-      this.favoriteIds.set(favs);
-      localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favs]));
-    }
+    this.storage.markDeleted(id);
+    this.storage.removeTitle(id);
+    this.favoriteIds.update((favs) => this.storage.removeFavorite(id, favs));
 
     this.chats.update((list) => list.filter((c) => c.id !== id));
     if (this.currentChat()?.id === id) {
@@ -152,12 +104,8 @@ export class ChatService {
     }
   }
 
-  /** Renommage local persisté dans localStorage */
   renameChat(id: number, title: string): void {
-    const stored = getStoredTitles();
-    stored[id] = title;
-    localStorage.setItem(TITLES_KEY, JSON.stringify(stored));
-
+    this.storage.setTitle(id, title);
     this.chats.update((list) =>
       list.map((c) => (c.id === id ? { ...c, title } : c))
     );
@@ -167,7 +115,6 @@ export class ChatService {
     }
   }
 
-  /** Basculer le statut favori d'un chat */
   toggleFavorite(id: number): void {
     const favs = new Set(this.favoriteIds());
     if (favs.has(id)) {
@@ -176,14 +123,13 @@ export class ChatService {
       favs.add(id);
     }
     this.favoriteIds.set(favs);
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favs]));
+    this.storage.saveFavorites(favs);
   }
 
   isFavorite(id: number): boolean {
     return this.favoriteIds().has(id);
   }
 
-  /** Mise à jour locale des modèles d'un chat (pas d'appel API) */
   updateChatModels(id: number, models: string[]): void {
     this.chats.update((list) =>
       list.map((c) => (c.id === id ? { ...c, models } : c))
