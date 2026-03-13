@@ -55,7 +55,7 @@ Le projet utilise **Vitest** pour garantir une rapidité d'exécution et une int
 
 ### Lancer les tests unitaires
 ```bash
-ng test --watch=false --coverage
+ng test
 ```
 
 ### Lancer les tests avec couverture (Coverage)
