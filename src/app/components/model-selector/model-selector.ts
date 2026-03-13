@@ -1,6 +1,6 @@
 import { Component, input, output, inject } from '@angular/core';
 import { ModelService } from '../../services/model.service';
-import { getModelColor } from '../../models/chat.models';
+import { getModelColor, getModelLogo } from '../../models/chat.models';
 
 @Component({
   selector: 'app-model-selector',
@@ -14,6 +14,7 @@ export class ModelSelectorComponent {
   modelsChanged = output<string[]>();
 
   getColor = getModelColor;
+  getLogo = getModelLogo;
 
   isActive(id: string): boolean {
     return this.activeModels().includes(id);

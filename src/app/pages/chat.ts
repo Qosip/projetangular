@@ -5,7 +5,7 @@ import { InputBarComponent } from '../components/input-bar/input-bar';
 import { ModelSelectorComponent } from '../components/model-selector/model-selector';
 import { ChatService } from '../services/chat.service';
 import { StreamingService } from '../services/streaming.service';
-import { getModelColor, getModelInitial } from '../models/chat.models';
+import { getModelColor, getModelInitial, getModelLogo } from '../models/chat.models';
 
 @Component({
   selector: 'app-chat',
@@ -51,6 +51,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   getColor = getModelColor;
   getInitial = getModelInitial;
+  getLogo = getModelLogo;
 
   private paramSub: any;
 

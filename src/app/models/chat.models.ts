@@ -37,8 +37,23 @@ const MODEL_COLORS: Record<string, string> = {
   'mistral': 'var(--model-mistral)',
 };
 
+const MODEL_LOGOS: Record<string, string> = {
+  'gpt-4': 'assets/logos/chatgpt.png',
+  'claude-3': 'assets/logos/claude.png',
+  'mistral': 'assets/logos/mistral.png',
+  'gemini': 'assets/logos/gemini.png',
+  'llama': 'assets/logos/llama.png',
+  'deepseek': 'assets/logos/deepseek.png',
+};
+
+
+
 export function getModelColor(modelId: string): string {
   return MODEL_COLORS[modelId] ?? 'var(--model-custom)';
+}
+
+export function getModelLogo(modelId: string): string | null {
+  return MODEL_LOGOS[modelId] ?? null;
 }
 
 export function getModelInitial(modelId: string): string {
