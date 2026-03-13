@@ -1,59 +1,97 @@
-# ProjetAngular
+# 🧠 NeuroTerminal
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
+NeuroTerminal est une interface de chat IA ultra-rapide et moderne construite avec **Angular 21**, **Tailwind CSS 4** et **DaisyUI 5**. Elle offre une expérience utilisateur premium inspirée des terminaux cyberpunk, avec un support multi-modèles et un streaming en temps réel extrêmement fluide.
 
-## Development server
+## ✨ Fonctionnalités Clés
 
-To start a local development server, run:
+### 💬 Chat & Streaming
+- **Support Multi-Modèles** : Discutez avec plusieurs IA simultanément (GPT-4, Claude 3, Mistral, etc.).
+- **Streaming en temps réel** : Les réponses s'affichent mot à mot avec un indicateur de curseur clignotant.
+- **Watchdog Intelligent** : Système de détection automatique des flux interrompus ou bloqués avec reprise d'erreur.
+- **Gestion des conflits** : Reprise automatique du stream en cas de déconnexion réseau (HTTP 409/ECONNRESET).
 
+### 🗂️ Organisation & Gestion
+- **Historique des Conversations** : Enregistrement local des discussions avec recherche et filtrage.
+- **Favoris** : Épinglez vos conversations importantes en haut de la liste.
+- **Édition Rapide** : Renommez ou supprimez vos chats directement depuis la barre latérale.
+- **Sélection de Modèles** : Personnalisez les agents actifs pour chaque discussion.
+
+### 🎨 Design & Expérience
+- **Interface Cyberpunk** : Design sombre et épuré avec glassmorphism et micro-animations.
+- **Gestionnaire de Thèmes** : Basculez entre de nombreux thèmes DaisyUI (Dark, Aqua, Synthwave, Cyberpunk, etc.).
+- **Notifications Toast** : Système d'alerte non-intrusif pour les succès et les erreurs.
+- **Mode Zoneless** : Optimisation maximale des performances grâce à la suppression de `zone.js`.
+
+---
+
+## 🛠️ Stack Technique
+
+- **Framework** : Angular v21.1 (Standalone components, Signals, Computed, Effects)
+- **Styling** : Tailwind CSS v4 & DaisyUI v5
+- **Tests** : Vitest (Remplaçant Karma/Jasmine pour une exécution instantanée)
+- **State Management** : Angular Signals & RxJS
+- **Routing** : Angular Router avec Guards et Interceptors
+
+---
+
+## 🚀 Démarrage Rapide
+
+### Installation
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### Lancer l'application (Développement)
 ```bash
-ng generate component component-name
+npm start
+```
+L'application sera disponible sur `http://localhost:4200`.
+
+---
+
+## 🧪 Tests & Qualité
+
+Le projet utilise **Vitest** pour garantir une rapidité d'exécution et une intégration parfaite avec le compilateur Angular.
+
+### Lancer les tests unitaires
+```bash
+npm test
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+### Lancer les tests avec couverture (Coverage)
+Cette commande génère un rapport complet de couverture de code dans le dossier `coverage/`.
 ```bash
-ng generate --help
+ng test --watch=false --coverage
 ```
 
-## Building
-
-To build the project run:
-
+### Voir le rapport de couverture
+Après avoir lancé la commande ci-dessus, ouvrez le fichier `index.html` généré :
 ```bash
-ng build
+# Windows
+start coverage/ProjetAngular/index.html
+
+# Mac/Linux
+open coverage/ProjetAngular/index.html
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 📂 Structure du Projet
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- `src/app/core/` : Services globaux, Authentification, Guards et Interceptors.
+- `src/app/features/` : Modules fonctionnels (Chat, Home, Login).
+  - `chat/` : Logique de streaming, gestion des modèles, stockage local.
+- `src/app/layout/` : Composants de structure (Sidebar, Topbar, MainLayout).
+- `src/app/shared/` : Composants et services réutilisables (Toast, ThemePicker).
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 🔐 Sécurité
 
-For end-to-end (e2e) testing, run:
+Le projet inclut :
+- Un `AuthInterceptor` qui injecte automatiquement le token JWT dans les en-têtes Authorization.
+- Un `AuthGuard` qui protège les routes sensibles et redirige vers `/login`.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Développé avec ❤️ pour une expérience IA futuriste.
