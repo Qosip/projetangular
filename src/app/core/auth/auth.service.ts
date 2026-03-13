@@ -1,11 +1,13 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthRepository } from './auth.repository';
+import { ToastService } from '../../shared/services/toast.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private router = inject(Router);
   private repo = inject(AuthRepository);
+  private toast = inject(ToastService);
 
   private readonly USERNAME_KEY = 'auth_username';
 
@@ -29,7 +31,9 @@ export class AuthService {
       },
       error: (err) => {
         this.loading.set(false);
-        this.error.set(err.error?.error ?? 'Erreur de connexion');
+        const msg = err.error?.error ?? 'Erreur de connexion';
+        this.error.set(msg);
+        this.toast.show(msg);
       },
     });
   }

@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
+import { ToastService } from '../../shared/services/toast.service';
 
 const API = '';
 
@@ -10,11 +11,30 @@ export interface StreamingMessage {
 
 @Injectable({ providedIn: 'root' })
 export class StreamingService {
+  private toast = inject(ToastService);
   streamingMessages = signal<Record<string, string>>({});
   completedMessages = signal<{ author: string; content: string }[]>([]);
   isStreaming = signal(false);
 
   private abortController: AbortController | null = null;
+  private watchdogTimer: any = null;
+
+  private resetWatchdog(onComplete: () => void): void {
+    this.clearWatchdog();
+    this.watchdogTimer = setTimeout(() => {
+      if (this.isStreaming()) {
+        this.toast.show('Le serveur ne répond plus');
+        this.finish(onComplete);
+      }
+    }, 10000); // 10s d'inactivité
+  }
+
+  private clearWatchdog(): void {
+    if (this.watchdogTimer) {
+      clearTimeout(this.watchdogTimer);
+      this.watchdogTimer = null;
+    }
+  }
 
   startStream(chatId: number, onComplete: () => void): void {
     this.stopStream();
@@ -24,13 +44,21 @@ export class StreamingService {
 
     const token = localStorage.getItem('auth_token');
     this.abortController = new AbortController();
+    let receivedCycleComplete = false;
 
     fetch(`${API}/chats/${chatId}/messages/stream`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       signal: this.abortController.signal,
     }).then(response => {
-      if (!response.body) return;
+      if (!response.ok) {
+        throw new Error(`Erreur serveur: ${response.status}`);
+      }
+      if (!response.body) {
+        this.finish(onComplete);
+        return;
+      }
 
+      this.resetWatchdog(onComplete);
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
@@ -38,9 +66,15 @@ export class StreamingService {
       const read = (): void => {
         reader.read().then(({ done, value }) => {
           if (done) {
+            this.clearWatchdog();
+            if (!receivedCycleComplete) {
+              this.toast.show('Le flux s\'est arrêté prématurément');
+            }
             this.finish(onComplete);
             return;
           }
+
+          this.resetWatchdog(onComplete);
 
           buffer += decoder.decode(value, { stream: true });
           const lines = buffer.split('\n');
@@ -55,6 +89,8 @@ export class StreamingService {
               const event = JSON.parse(json);
 
               if (event.type === 'cycle_complete') {
+                receivedCycleComplete = true;
+                this.clearWatchdog();
                 this.finish(onComplete);
                 return;
               }
@@ -80,11 +116,21 @@ export class StreamingService {
           }
 
           read();
+        }).catch(err => {
+          this.clearWatchdog();
+          if (err?.name !== 'AbortError') {
+            this.toast.show('Le flux a été interrompu');
+          }
+          this.finish(onComplete);
         });
       };
 
       read();
-    }).catch(() => {
+    }).catch((err) => {
+      this.clearWatchdog();
+      if (err?.name !== 'AbortError') {
+        this.toast.show(err?.message || 'Erreur de connexion au streaming');
+      }
       this.finish(onComplete);
     });
   }
@@ -95,6 +141,7 @@ export class StreamingService {
   }
 
   private finish(onComplete: () => void): void {
+    this.clearWatchdog();
     this.isStreaming.set(false);
     this.streamingMessages.set({});
     this.completedMessages.set([]);

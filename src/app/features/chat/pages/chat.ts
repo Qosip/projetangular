@@ -1,5 +1,6 @@
 import { Component, inject, ElementRef, viewChild, OnInit, OnDestroy, effect, computed } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { MessageBubbleComponent } from '../components/message-bubble/message-bubble';
 import { InputBarComponent } from '../components/input-bar/input-bar';
 import { ModelSelectorComponent } from '../components/model-selector/model-selector';
@@ -53,7 +54,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   getInitial = getModelInitial;
   getLogo = getModelLogo;
 
-  private paramSub: any;
+  private paramSub: Subscription | undefined;
 
   constructor() {
     effect(() => {

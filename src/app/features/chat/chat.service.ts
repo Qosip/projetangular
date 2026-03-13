@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ChatRepository } from './chat.repository';
 import { StreamingService } from './streaming.service';
 import { ChatStorageService } from './chat-storage.service';
+import { ToastService } from '../../shared/services/toast.service';
 import { Chat, Message } from './chat.models';
 
 @Injectable({ providedIn: 'root' })
@@ -10,6 +11,7 @@ export class ChatService {
   private repo = inject(ChatRepository);
   private router = inject(Router);
   private storage = inject(ChatStorageService);
+  private toast = inject(ToastService);
   streaming = inject(StreamingService);
 
   chats = signal<Chat[]>([]);
@@ -35,6 +37,7 @@ export class ChatService {
           chats.filter((c) => !deleted.has(c.id)).map((c) => this.storage.applyStoredTitle(c))
         );
       },
+      error: () => this.toast.show('Impossible de charger les conversations'),
     });
   }
 
@@ -44,6 +47,7 @@ export class ChatService {
         if (this.storage.getDeletedIds().has(chat.id)) return;
         this.currentChat.set(this.storage.applyStoredTitle(chat));
       },
+      error: () => this.toast.show('Impossible de charger la conversation'),
     });
   }
 
@@ -53,6 +57,7 @@ export class ChatService {
         this.messages.set(res.messages);
         this.processing.set(res.processing);
       },
+      error: () => this.toast.show('Impossible de charger les messages'),
     });
   }
 
@@ -62,6 +67,7 @@ export class ChatService {
         this.chats.update((list) => [chat, ...list]);
         this.currentChat.set(chat);
       },
+      error: () => this.toast.show('Impossible de créer la conversation'),
     });
   }
 
@@ -82,6 +88,8 @@ export class ChatService {
             this.loadMessages(chatId);
             this.loadChats();
           });
+        } else {
+          this.toast.show('Erreur lors de l\'envoi du message');
         }
       },
     });

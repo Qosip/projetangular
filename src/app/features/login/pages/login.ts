@@ -31,6 +31,10 @@ export class LoginComponent implements OnInit {
   }
 
   connect() {
+    if (!this.email.trim()) {
+      this.triggerShake();
+      return;
+    }
     const name = this.email.trim().split('@')[0] || 'Operateur';
     this.auth.login(name);
   }
