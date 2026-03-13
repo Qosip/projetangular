@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { getModelColor } from '../models/chat.models';
+import { getModelColor } from '../../features/chat/chat.models';
 
 @Component({
   selector: 'app-topbar',

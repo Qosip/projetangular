@@ -1,6 +1,6 @@
 import { Component, signal, OnInit, ElementRef, ViewChild, inject, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',

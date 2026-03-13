@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageBubbleComponent } from '../components/message-bubble/message-bubble';
 import { InputBarComponent } from '../components/input-bar/input-bar';
 import { ModelSelectorComponent } from '../components/model-selector/model-selector';
-import { ChatService } from '../services/chat.service';
-import { StreamingService } from '../services/streaming.service';
-import { getModelColor, getModelInitial, getModelLogo } from '../models/chat.models';
+import { ChatService } from '../chat.service';
+import { StreamingService } from '../streaming.service';
+import { getModelColor, getModelInitial, getModelLogo } from '../chat.models';
 
 @Component({
   selector: 'app-chat',

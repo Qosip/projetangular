@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { ChatService } from '../services/chat.service';
-import { ModelService } from '../services/model.service';
+import { AuthService } from '../../../core/auth/auth.service';
+import { ChatService } from '../../chat/chat.service';
+import { ModelService } from '../../chat/model.service';
 import { RecentConversationsComponent } from '../components/recent-conversations/recent-conversations';
 
 @Component({

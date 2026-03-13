@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Chat, getModelColor } from '../../models/chat.models';
+import { Chat, getModelColor } from '../../../chat/chat.models';
 
 @Component({
     selector: 'app-recent-conversations',

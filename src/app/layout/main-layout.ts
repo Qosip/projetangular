@@ -2,9 +2,9 @@ import { Component, inject, computed } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
-import { SidebarComponent } from './sidebar';
-import { TopbarComponent } from './topbar';
-import { ChatService } from '../services/chat.service';
+import { SidebarComponent } from './sidebar/sidebar';
+import { TopbarComponent } from './topbar/topbar';
+import { ChatService } from '../features/chat/chat.service';
 
 @Component({
   selector: 'app-main-layout',

@@ -1,11 +1,11 @@
 import { Component, inject, OnInit, effect, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ChatService } from '../services/chat.service';
-import { AuthService } from '../services/auth.service';
-import { ModelService } from '../services/model.service';
-import { getModelColor } from '../models/chat.models';
-import { ThemePickerComponent } from '../components/theme-picker/theme-picker';
+import { ChatService } from '../../features/chat/chat.service';
+import { AuthService } from '../../core/auth/auth.service';
+import { ModelService } from '../../features/chat/model.service';
+import { getModelColor } from '../../features/chat/chat.models';
+import { ThemePickerComponent } from '../../shared/components/theme-picker/theme-picker';
 
 @Component({
   selector: 'app-sidebar',

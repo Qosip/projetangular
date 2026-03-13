@@ -1,6 +1,6 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthRepository } from '../repositories/auth.repository';
+import { AuthRepository } from './auth.repository';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

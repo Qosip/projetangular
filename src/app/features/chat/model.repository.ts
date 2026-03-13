@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AiModel } from '../models/chat.models';
+import { AiModel } from './chat.models';
 
 const API = '';
 

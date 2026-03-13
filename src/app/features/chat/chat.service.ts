@@ -1,9 +1,9 @@
 import { Injectable, signal, inject, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { ChatRepository } from '../repositories/chat.repository';
+import { ChatRepository } from './chat.repository';
 import { StreamingService } from './streaming.service';
 import { ChatStorageService } from './chat-storage.service';
-import { Chat, Message } from '../models/chat.models';
+import { Chat, Message } from './chat.models';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {

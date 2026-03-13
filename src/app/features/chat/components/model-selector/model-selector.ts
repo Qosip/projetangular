@@ -1,6 +1,6 @@
 import { Component, input, output, inject } from '@angular/core';
-import { ModelService } from '../../services/model.service';
-import { getModelColor, getModelLogo } from '../../models/chat.models';
+import { ModelService } from '../../model.service';
+import { getModelColor, getModelLogo } from '../../chat.models';
 
 @Component({
   selector: 'app-model-selector',

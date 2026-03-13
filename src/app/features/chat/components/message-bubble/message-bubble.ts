@@ -1,6 +1,6 @@
 import { Component, input, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { Message, getModelColor, getModelInitial, getModelLogo } from '../../models/chat.models';
+import { Message, getModelColor, getModelInitial, getModelLogo } from '../../chat.models';
 
 @Component({
   selector: 'app-message-bubble',

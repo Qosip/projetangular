@@ -1,6 +1,6 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { ModelRepository } from '../repositories/model.repository';
-import { AiModel } from '../models/chat.models';
+import { ModelRepository } from './model.repository';
+import { AiModel } from './chat.models';
 
 @Injectable({ providedIn: 'root' })
 export class ModelService {

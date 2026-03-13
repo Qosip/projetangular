@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Chat, Message, MessagesResponse } from '../models/chat.models';
+import { Chat, Message, MessagesResponse } from './chat.models';
 
 const API = '';
 
