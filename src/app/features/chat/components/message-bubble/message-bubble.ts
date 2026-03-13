@@ -1,12 +1,14 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { Message, getModelColor, getModelInitial, getModelLogo } from '../../chat.models';
+import { MarkdownPipe } from '../../../../shared/pipes/markdown.pipe';
 
 @Component({
   selector: 'app-message-bubble',
-  imports: [DatePipe],
+  imports: [DatePipe, MarkdownPipe],
   templateUrl: './message-bubble.html',
-  styleUrl: './message-bubble.css'
+  styleUrl: './message-bubble.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MessageBubbleComponent {
   message = input.required<Message>();
